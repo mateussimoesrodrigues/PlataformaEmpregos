@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Empregos</title>
+    
+    <!-- Carregar o módulo 'static' -->
+    {% load static %}
+
+    <!-- Vinculando o arquivo CSS -->
+    <link rel="stylesheet" href="{% static 'empregos/styles.css' %}">
+</head>
+<body>
+    <h1>Bem-vindo à Plataforma de Empregos!</h1>
+    
+    <!-- Adicionando um botão -->
+    <button id="testButton">Grupo é de quem?</button>
+
+    <!-- Vinculando o arquivo JavaScript -->
+    <script src="{% static 'empregos/scripts.js' %}"></script>
+</body>
+</html>
