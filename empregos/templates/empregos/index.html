@@ -8,14 +8,14 @@
     <!-- Carregar o módulo 'static' -->
     {% load static %}
 
-    <!-- Vinculando o arquivo CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'empregos/styles.css' %}">
 </head>
 <body>
     <h1>Bem-vindo à Plataforma de Empregos!</h1>
     
     <!-- Adicionando um botão -->
-    <button id="testButton">Grupo é de quem?</button>
+    <button class="btn btn-primary" id="testButton">Grupo é de quem?</button>
 
     <!-- Vinculando o arquivo JavaScript -->
     <script src="{% static 'empregos/scripts.js' %}"></script>

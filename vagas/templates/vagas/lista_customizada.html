@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Vagas de Emprego</title>
+</head>
+<body>
+    <h2>Lista de Vagas de Emprego</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nome da Empresa</th>
+                <th>Descrição</th>
+                <th>Localização</th>
+                <th>Área</th>
+                <th>Info Adicionais</th>
+                <th>Data de Criação</th>
+                <th>Requisitos</th>
+                <th>Benefícios</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vaga in vagas %}
+                <tr>
+                    <td>{{ vaga.nome_empresa }}</td>
+                    <td>{{ vaga.descricao }}</td>
+                    <td>{{ vaga.localizacao }}</td>
+                    <td>{{ vaga.area }}</td>
+                    <td>{{ vaga.info_adicionais }}</td>
+                    <td>{{ vaga.data_criacao }}</td>
+                    <td>{{ vaga.id_requisito }}</td>
+                    <td>{{ vaga.beneficios }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="8">Nenhuma vaga encontrada.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
