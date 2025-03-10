@@ -1,0 +1,73 @@
+<!-- templates/vagas/area_empresa.html -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Área da Empresa</title>
+    <!-- Adicionando o Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">Plataforma de Empregos</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Área da Empresa</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Container para o conteúdo -->
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Área da Empresa</h1>
+
+        <!-- Card para criar vagas -->
+        <div class="row justify-content-center">
+            <div class="col-md-8 mb-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Crie uma Nova Vaga</h5>
+                        <p class="card-text">Crie vagas para atrair candidatos qualificados. Preencha as informações abaixo e publique sua vaga.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card para visualizar candidatos -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mt-4">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Visualizar Candidatos</h5>
+                        <p class="card-text">Confira os candidatos que se inscreveram nas suas vagas. Acompanhe o processo seletivo de forma rápida e eficiente.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card para visualizar todas as vagas -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mt-4">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Minhas Vagas</h5>
+                        <p class="card-text">Veja todas as vagas que você criou e gerencie o status delas facilmente.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (necessário para alguns componentes, como o collapse) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.0/dist/umd/popper.min.js" integrity="sha384-jGoC2kp90gBQAwXft7PpFuMhS6YXK0z9E7N9Jd5npPJS6Pz17hvh2UktkPMkXndt" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8fBxe+hfjoIHeHYGlLrtuHgH8FVvWb6Cg74pyNkFc1zTmA" crossorigin="anonymous"></script>
+</body>
+</html>

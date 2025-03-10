@@ -7,3 +7,15 @@ def listar_dados_customizados(request):
 
     # Passa os dados para o template
     return render(request, 'vagas/lista_customizada.html', {'vagas': vagas})
+
+def empresas(request):
+    vagas = VagaDeEmprego.objects.all()  # Exemplo de consulta ao banco
+    return render(request, 'vagas/empresas.html', {'vagas': vagas})
+
+def dashboard(request):
+    vagas = VagaDeEmprego.objects.all()  # Exemplo de consulta ao banco
+    return render(request, 'vagas/dashboard.html', {'vagas': vagas})
+
+def candidatos(request):
+    vagas = VagaDeEmprego.objects.all()  # Exemplo de consulta ao banco
+    return render(request, 'vagas/candidatos.html', {'vagas': vagas})
