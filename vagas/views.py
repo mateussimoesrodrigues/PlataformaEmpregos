@@ -19,3 +19,13 @@ def dashboard(request):
 def candidatos(request):
     vagas = VagaDeEmprego.objects.all()  # Exemplo de consulta ao banco
     return render(request, 'vagas/candidatos.html', {'vagas': vagas})
+
+def pesquisa_vagas(request):
+    query = request.GET.get('pesquisa_vagas', '')  # Obtém o valor do input (ou '' se estiver vazio)
+    
+    if query:
+        vagas = VagaDeEmprego.objects.filter(nome_empresa__icontains=query)  # Filtra pelo nome da empresa
+    else:
+        vagas = VagaDeEmprego.objects.all()  # Se não houver pesquisa, exibe todas as vagas
+
+    return render(request, 'vagas/candidatos.html', {'vagas': vagas, 'query': query})

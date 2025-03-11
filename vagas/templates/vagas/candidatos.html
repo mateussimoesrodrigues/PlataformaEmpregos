@@ -1,4 +1,3 @@
-<!-- templates/vagas/minha_nova_pagina.html -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -6,64 +5,86 @@
     <title>Candidatos</title>
     <!-- Adicionando o Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'dashboard' %}">Plataforma de Empregos</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Área do Candidato</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Container para o conteúdo -->
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Área do Candidato</h1>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div style="background-color:#046BD4" class="container-fluid">
+        <a style="color: white; font-family: 'Breve Sans Text'; font-size: 32px" class="navbar-brand" href="{% url 'dashboard' %}">Plataforma de Empregos</a>
+        
+        <!-- Barra de Pesquisa -->
+<!-- Barra de Pesquisa -->
+        <form class="d-flex mx-auto" role="search" method="GET" action="{% url 'pesquisa_vagas' %}">
+            <input class="form-control me-2" type="search" name="pesquisa_vagas" placeholder="Buscar vagas..." aria-label="Search" value="{{ query }}">
+            <button class="btn btn-outline-light" type="submit">Buscar</button>
+        </form>
 
-        <!-- Card para mostrar as vagas disponíveis -->
-        <div class="row justify-content-center">
-            <div class="col-md-8 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Vagas Disponíveis</h5>
-                        <ul class="list-group">
-                            {% for vaga in vagas %}
-                                <li class="list-group-item">
-                                    {{ vaga.nome_empresa }} - {{ vaga.area }}
-                                </li>
-                            {% empty %}
-                                <li class="list-group-item">Não há vagas disponíveis.</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Card para adicionar mais informações do candidato (por exemplo, curriculo) -->
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card mt-4">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Adicione seu Currículo</h5>
-                        <p class="card-text">Complete seu perfil para se candidatar às vagas e aumentar suas chances de ser encontrado pelas empresas.</p>
-                    </div>
+        <!-- Botão do Menu Hambúrguer -->
+        <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
+            <i class="bi bi-list" style="font-size: 24px;"></i> <!-- Ícone do menu -->
+        </button>
+    </div>
+</nav>
+
+<!-- Menu Lateral (Offcanvas) -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="menuLateral">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Meu Perfil</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="list-group">
+            <li class="list-group-item"><a href="#">Meu Currículo</a></li>
+            <li class="list-group-item"><a href="#">Minha Conta</a></li>
+            <li class="list-group-item"><a href="#">Minhas Candidaturas</a></li>
+            <li class="list-group-item"><a href="#">Empresas que me Candidatei</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- Container para o conteúdo -->
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Área do Candidato</h1>
+
+    <!-- Card para mostrar as vagas disponíveis -->
+    <div class="row justify-content-center">
+        <div class="col-md-8 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Vagas Disponíveis</h5>
+                    <ul class="list-group">
+                        {% for vaga in vagas %}
+                            <li class="list-group-item">
+                                {{ vaga.nome_empresa }} - {{ vaga.area }}
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">Não há vagas disponíveis.</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS (necessário para alguns componentes, como o collapse) -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.0/dist/umd/popper.min.js" integrity="sha384-jGoC2kp90gBQAwXft7PpFuMhS6YXK0z9E7N9Jd5npPJS6Pz17hvh2UktkPMkXndt" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8fBxe+hfjoIHeHYGlLrtuHgH8FVvWb6Cg74pyNkFc1zTmA" crossorigin="anonymous"></script>
+    <!-- Card para adicionar mais informações do candidato (por exemplo, curriculo) -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Adicione seu Currículo</h5>
+                    <p class="card-text">Complete seu perfil para se candidatar às vagas e aumentar suas chances de ser encontrado pelas empresas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS (necessário para o menu funcionar) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
 </body>
 </html>
