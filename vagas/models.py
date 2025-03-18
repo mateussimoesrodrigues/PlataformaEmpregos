@@ -10,6 +10,7 @@ class VagaDeEmprego(models.Model):
     data_criacao = models.DateTimeField(auto_now_add=True)
     id_requisito = models.CharField(max_length=255, null=True, blank=True)
     beneficios = models.CharField(max_length=255, null=True, blank=True)
+    cargo = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'vagas_de_emprego'  # Mapeia para a tabela real do banco

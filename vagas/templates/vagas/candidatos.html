@@ -14,14 +14,11 @@
     <div style="background-color:#046BD4" class="container-fluid">
         <a style="color: white; font-family: 'Breve Sans Text'; font-size: 32px" class="navbar-brand" href="{% url 'dashboard' %}">Plataforma de Empregos</a>
         
-        <!-- Barra de Pesquisa -->
 <!-- Barra de Pesquisa -->
         <form class="d-flex mx-auto" role="search" method="GET" action="{% url 'pesquisa_vagas' %}">
             <input class="form-control me-2" type="search" name="pesquisa_vagas" placeholder="Buscar vagas..." aria-label="Search" value="{{ query }}">
             <button class="btn btn-outline-light" type="submit">Buscar</button>
         </form>
-
-
         <!-- Botão do Menu Hambúrguer -->
         <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
             <i class="bi bi-list" style="font-size: 24px;"></i> <!-- Ícone do menu -->
@@ -70,16 +67,6 @@
     </div>
 
     <!-- Card para adicionar mais informações do candidato (por exemplo, curriculo) -->
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card mt-4">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Adicione seu Currículo</h5>
-                    <p class="card-text">Complete seu perfil para se candidatar às vagas e aumentar suas chances de ser encontrado pelas empresas.</p>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- Bootstrap JS (necessário para o menu funcionar) -->
