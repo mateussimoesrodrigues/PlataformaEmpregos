@@ -80,11 +80,11 @@ WSGI_APPLICATION = 'plataforma.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'plataforma_empregos',
-        'USER': 'mateus',
-        'PASSWORD': 'Mateus19',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': 'plataforma_empregos', 
+        'USER': 'geral',        
+        'PASSWORD': '1234',      
+        'HOST': 'localhost',            
+        'PORT': '3306',                 
     }
 }
 
