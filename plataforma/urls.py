@@ -1,7 +1,7 @@
 """
 URL configuration for plataforma project.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
+The urlpatterns list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
 Examples:
 Function views
@@ -16,9 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from vagas import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('empregos/', include('empregos.urls')),
     path('vagas/', include('vagas.urls')), 
+    path('admin/', admin.site.urls),
+    path('', include('vagas.urls')),  # Carrega a URL padrão como a do app 'vagas'
 ]

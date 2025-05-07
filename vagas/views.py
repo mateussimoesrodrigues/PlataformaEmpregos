@@ -3,6 +3,112 @@ from .models import VagaDeEmprego
 from django.db import connection
 import json
 from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
+from django.contrib.auth.models import AnonymousUser, User
+from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth.hashers import check_password  # Importando o check_password
+from django.contrib.auth.hashers import make_password  # Importe o make_password
+
+class CustomBackend(ModelBackend):
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
+
+def login_view(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        senha = request.POST.get('senha')
+
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT PAGINA, NOME_EMPRESA, SENHA FROM controle_login WHERE EMAIL_CANDIDATO = %s
+                """, [email])
+                resultado = cursor.fetchone()
+
+                if resultado:
+                    pagina, nome_empresa, senha_db = resultado  # Obtemos a senha da base de dados
+
+                    # Verifica se a senha fornecida bate com a senha armazenada no banco de dados
+                    if check_password(senha, senha_db):  # Usando check_password para verificar a senha criptografada
+                        # Criação de um usuário fictício para manter a sessão
+                        user, created = User.objects.get_or_create(username=email, email=email)
+                        login(request, user)  # Realiza o login do usuário no Django
+
+                        # Armazena o nome da empresa na sessão
+                        request.session['nome_empresa'] = nome_empresa
+
+                        # Redireciona para a página correta com base na 'pagina'
+                        if pagina == 'CANDIDATO':
+                            return redirect('candidatos')
+                        elif pagina == 'EMPRESA':
+                            return redirect('empresas')
+                        else:
+                            messages.error(request, 'Página desconhecida')
+                    else:
+                        messages.error(request, 'Senha incorreta')
+                else:
+                    messages.error(request, 'Email não encontrado')
+
+        except Exception as e:
+            messages.error(request, f'Ocorreu um erro: {e}')
+
+    return render(request, 'vagas/login.html')
+
+
+def registro_empresa(request):
+    return render(request, 'vagas/registro_empresa.html')
+
+from django.db import connection
+from django.contrib import messages
+from django.shortcuts import render, redirect
+
+def registro_candidato(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        sobrenome = request.POST.get('sobrenome')
+        data_nascimento = request.POST.get('data_nascimento')
+        email = request.POST.get('email')
+        telefone = request.POST.get('telefone')
+        genero = request.POST.get('genero')
+        senha = request.POST.get('senha')
+
+        print("Recebi POST:")
+        print(f"Nome: {nome}, Sobrenome: {sobrenome}, Data Nasc: {data_nascimento}, Email: {email}, Telefone: {telefone}, Gênero: {genero}, Senha: {senha}")
+
+        try:
+            # Criptografar a senha antes de enviá-la para o banco de dados
+            senha_criptografada = make_password(senha)
+
+            # Verifique o print aqui, se a senha criptografada está sendo gerada corretamente
+            print(f"Senha criptografada: {senha_criptografada}")
+
+            # Certifique-se de passar todos os dados corretamente para a procedure
+            with connection.cursor() as cursor:
+                cursor.callproc('plataforma_empregos.candidatos_spi', [
+                    nome,
+                    sobrenome,
+                    data_nascimento,
+                    email,  # Passando o email corretamente
+                    telefone,
+                    genero,
+                    senha_criptografada  # Aqui passamos a senha criptografada
+                ])
+
+            connection.commit()  # <-- ADICIONAR ISTO AQUI!
+            messages.success(request, 'Cadastro realizado com sucesso!')
+            return redirect('login')
+        except Exception as e:
+            messages.error(request, f'Ocorreu um erro: {e}')
+            print(f"Erro: {e}")  # Para entender o erro exato
+
+    return render(request, 'vagas/registro_candidato.html')
 
 
 def listar_dados_customizados(request):
@@ -34,46 +140,29 @@ def pesquisa_vagas(request):
 
     return render(request, 'vagas/candidatos.html', {'vagas': vagas, 'query': query})
 
+@login_required(login_url='login')  # Redireciona para login se não estiver autenticado
 def novas_vagas(request):
-    vagas = VagaDeEmprego.objects.all()  # Exemplo de consulta ao banco
-    return render(request, 'vagas/novas_vagas.html', {'vagas': vagas})
-
-from django.shortcuts import render, redirect
-from django.db import connection
-
-from django.db import connection
-from django.shortcuts import render, redirect
-
-def criar_vaga(request):
     if request.method == 'POST':
-        # Pegando os dados do formulário
-        nome_empresa = request.POST.get('nome_empresa')
+        nome_empresa = request.session.get('nome_empresa', 'Empresa Desconhecida')
+
         descricao = request.POST.get('descricao')
         localizacao = request.POST.get('localizacao')
         area = request.POST.get('area')
         info_adicionais = request.POST.get('info_adicionais')
         beneficios = request.POST.get('beneficios')
 
-        # Chamando a procedure para adicionar a vaga
         with connection.cursor() as cursor:
-            # Chamando a procedure sem passar id_requisito como parâmetro
             cursor.callproc('adicionar_vaga_spi', [nome_empresa, descricao, localizacao, area, info_adicionais, beneficios])
+            cursor.execute("SELECT @id_requisito")
+            id_requisito = cursor.fetchone()[0]
 
-            # Recuperando o ID gerado
-            cursor.execute("SELECT @id_requisito")  
-            id_requisito = cursor.fetchone()[0]  # Captura o valor retornado
-
-        # Commit para garantir a inserção no banco
         connection.commit()
-
-        # Exibir no terminal para depuração
         print(f"Vaga criada com id_requisito: {id_requisito}")
-
-        # Redireciona para a página de sucesso com o ID da vaga
         return redirect('sucesso', id_requisito=id_requisito)
 
-    # Se não for POST, renderiza o formulário para criar a vaga
-    return render(request, 'vagas/area_empresa.html')
+    return render(request, 'vagas/novas_vagas.html')
+
+
 
 def sucesso_view(request, id_requisito):
     # Buscar os requisitos já cadastrados para a vaga

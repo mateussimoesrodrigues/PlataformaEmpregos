@@ -46,10 +46,11 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # <-- Este aqui é essencial!
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'plataforma.urls'
 
@@ -83,7 +84,7 @@ DATABASES = {
         'NAME': 'plataforma_empregos', 
         'USER': 'geral',        
         'PASSWORD': '1234',      
-        'HOST': 'localhost',            
+        'HOST': '192.168.56.181',            
         'PORT': '3306',                 
     }
 }

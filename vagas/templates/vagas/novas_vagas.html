@@ -1,22 +1,17 @@
-<!-- templates/vagas/area_empresa.html -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <title>Área da Empresa</title>
-    <!-- Adicionando o Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div style="background-color:#046BD4" class="container-fluid">
             <a style="color: white; font-family: 'Breve Sans Text'; font-size: 32px" class="navbar-brand" href="{% url 'dashboard' %}">Plataforma de Empregos</a>
-            
-            <!-- Botão do Menu Hambúrguer -->
             <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
-                <i class="bi bi-list" style="font-size: 24px;"></i> <!-- Ícone do menu -->
+                <i class="bi bi-list" style="font-size: 24px;"></i>
             </button>
         </div>
     </nav>
@@ -32,27 +27,23 @@
             </ul>
         </div>
     </div>
-    <!-- Container para o conteúdo -->
+
     <div class="container mt-5">
-        <!-- Card para criar vagas -->
         <div class="row justify-content-center">
             <div class="col-md-8 mb-4">
                 <div class="card">
                     <div class="card-body text-center">
-                        <h1 class="card-title">Crie uma Nova Vaga</h5>
+                        <h1 class="card-title">Crie uma Nova Vaga</h1>
                         <p class="card-text">Crie vagas para atrair candidatos qualificados. Preencha as informações abaixo e publique sua vaga.</p>
                     </div>
                 </div>
             </div>
-        </div>       
+        </div>
     </div>
+
     <div class="container mt-4">
-        <form method="POST" action="{% url 'criar_vaga' %}">
+        <form method="POST" action="{% url 'novas_vagas' %}">
             {% csrf_token %}
-            <div class="mb-3">
-                <label class="form-label">Nome da Empresa</label>
-                <input type="text" class="form-control" name="nome_empresa" required>
-            </div>
             <div class="mb-3">
                 <label class="form-label">Descrição</label>
                 <textarea class="form-control" name="descricao" required></textarea>
@@ -73,13 +64,21 @@
                 <label class="form-label">Benefícios</label>
                 <input type="text" class="form-control" name="beneficios">
             </div>
+            <!-- Campo de Requisitos se quiser adicionar depois -->
+            <!--
+            <div class="mb-3">
+                <label class="form-label">Requisitos</label>
+                <select class="form-select" multiple name="requisitos">
+                    <option value="1">Graduação completa</option>
+                    <option value="2">Experiência com Django</option>
+                    <option value="3">Inglês intermediário</option>
+                </select>
+            </div>
+            -->
             <button type="submit" class="btn btn-primary">Criar Vaga</button>
         </form>
     </div>
 
-    <!-- Bootstrap JS (necessário para alguns componentes, como o collapse) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.0/dist/umd/popper.min.js" integrity="sha384-jGoC2kp90gBQAwXft7PpFuMhS6YXK0z9E7N9Jd5npPJS6Pz17hvh2UktkPMkXndt" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8fBxe+hfjoIHeHYGlLrtuHgH8FVvWb6Cg74pyNkFc1zTmA" crossorigin="anonymous"></script>
 </body>
 </html>
