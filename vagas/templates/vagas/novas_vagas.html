@@ -22,8 +22,8 @@
         </div>
         <div class="offcanvas-body">
             <ul class="list-group">
-                <li class="list-group-item"><a href="#">Criar nova vaga</a></li>
-                <li class="list-group-item"><a href="#">Minhas Vagas</a></li>
+                <li class="list-group-item"><a href="{% url 'novas_vagas' %}">Criar nova vaga</a></li>
+                <li class="list-group-item"><a href="{% url 'minhas_vagas' %}">Minhas Vagas</a></li>
             </ul>
         </div>
     </div>
@@ -57,6 +57,10 @@
                 <input type="text" class="form-control" name="area">
             </div>
             <div class="mb-3">
+                <label class="form-label">Cargo</label>
+                <input type="text" class="form-control" name="cargo">
+            </div>
+            <div class="mb-3">
                 <label class="form-label">Informações Adicionais</label>
                 <textarea class="form-control" name="info_adicionais"></textarea>
             </div>
@@ -64,17 +68,10 @@
                 <label class="form-label">Benefícios</label>
                 <input type="text" class="form-control" name="beneficios">
             </div>
-            <!-- Campo de Requisitos se quiser adicionar depois -->
-            <!--
             <div class="mb-3">
-                <label class="form-label">Requisitos</label>
-                <select class="form-select" multiple name="requisitos">
-                    <option value="1">Graduação completa</option>
-                    <option value="2">Experiência com Django</option>
-                    <option value="3">Inglês intermediário</option>
-                </select>
+                <label class="form-label">Data Encerramento</label>
+                <input type="date" class="form-control" name="data_encerramento">
             </div>
-            -->
             <button type="submit" class="btn btn-primary">Criar Vaga</button>
         </form>
     </div>

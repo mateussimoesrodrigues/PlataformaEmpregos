@@ -111,34 +111,47 @@ def registro_candidato(request):
     return render(request, 'vagas/registro_candidato.html')
 
 
-def listar_dados_customizados(request):
-    # Consulta a tabela 'vagas_de_emprego' e limita a 10 registros
-    vagas = VagaDeEmprego.objects.all()[:10]  # Limita a 10 registros
-
-    # Passa os dados para o template
-    return render(request, 'vagas/lista_customizada.html', {'vagas': vagas})
-
 def empresas(request):
     vagas = VagaDeEmprego.objects.all()  # Exemplo de consulta ao banco
     return render(request, 'vagas/empresas.html', {'vagas': vagas})
 
-def dashboard(request):
-    vagas = VagaDeEmprego.objects.all()  # Exemplo de consulta ao banco
-    return render(request, 'vagas/dashboard.html', {'vagas': vagas})
 
 def candidatos(request):
-    vagas = VagaDeEmprego.objects.all()  # Exemplo de consulta ao banco
-    return render(request, 'vagas/candidatos.html', {'vagas': vagas})
-
-def pesquisa_vagas(request):
-    query = request.GET.get('pesquisa_vagas', '')  # Obtém o valor do input (ou '' se estiver vazio)
+    query = request.GET.get('candidatos', '') 
     
     if query:
-        vagas = VagaDeEmprego.objects.filter(nome_empresa__icontains=query)  # Filtra pelo nome da empresa
+        with connection.cursor() as cursor:
+            cursor.execute("""SELECT NOME_EMPRESA, DESCRICAO, LOCALIZACAO, AREA, INFO_ADICIONAIS, BENEFICIOS, CARGO, DATA_ENCERRAMENTO, id_vaga FROM plataforma_empregos.vagas_de_emprego WHERE CURDATE() <= DATA_ENCERRAMENTO AND NOME_EMPRESA = %s;""", [query])
+            colunas = [col[0] for col in cursor.description]        
+            vagas = [dict(zip(colunas, row)) for row in cursor.fetchall()]
     else:
-        vagas = VagaDeEmprego.objects.all()  # Se não houver pesquisa, exibe todas as vagas
+        with connection.cursor() as cursor:
+            cursor.execute("""SELECT NOME_EMPRESA, DESCRICAO, LOCALIZACAO, AREA, INFO_ADICIONAIS, BENEFICIOS, CARGO, DATA_ENCERRAMENTO, id_vaga FROM plataforma_empregos.vagas_de_emprego WHERE CURDATE() <= DATA_ENCERRAMENTO;""")
+            colunas = [col[0] for col in cursor.description]        
+            vagas = [dict(zip(colunas, row)) for row in cursor.fetchall()]
 
-    return render(request, 'vagas/candidatos.html', {'vagas': vagas, 'query': query})
+    return render(request, 'vagas/candidatos.html', {'vagas': vagas})
+
+def candidatar_vaga(request, id_vaga):
+    # Buscar os requisitos já cadastrados para a vaga
+    cursor = connection.cursor()
+    cursor.execute("SELECT REQUISITOS FROM plataforma_empregos.requisitos_da_vaga WHERE id_vaga = %s", [id_vaga])
+    id_vaga = [{'id_vaga': row[0]} for row in cursor.fetchall()]
+
+    return render(request, 'vagas/candidatar_vaga.html', {'id_vaga': id_vaga})
+
+@login_required
+def minhas_vagas(request):
+    nome_empresa = request.session.get('nome_empresa', 'Empresa Desconhecida')
+
+    # Consulta SQL direta para filtrar as vagas pela empresa
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT NOME_EMPRESA, DESCRICAO, LOCALIZACAO, AREA, INFO_ADICIONAIS, BENEFICIOS, CARGO, DATA_ENCERRAMENTO, id_requisito FROM plataforma_empregos.vagas_de_emprego WHERE NOME_EMPRESA = %s""", [nome_empresa])
+
+        colunas = [col[0] for col in cursor.description]  # nomes das colunas
+        vagas = [dict(zip(colunas, row)) for row in cursor.fetchall()]  # transformar em dicionários
+
+    return render(request, 'vagas/minhas_vagas.html', {'vagas': vagas})
 
 @login_required(login_url='login')  # Redireciona para login se não estiver autenticado
 def novas_vagas(request):
@@ -150,9 +163,11 @@ def novas_vagas(request):
         area = request.POST.get('area')
         info_adicionais = request.POST.get('info_adicionais')
         beneficios = request.POST.get('beneficios')
+        cargo = request.POST.get('cargo')
+        data_encerramento = request.POST.get('data_encerramento')
 
         with connection.cursor() as cursor:
-            cursor.callproc('adicionar_vaga_spi', [nome_empresa, descricao, localizacao, area, info_adicionais, beneficios])
+            cursor.callproc('adicionar_vaga_spi', [nome_empresa, descricao, localizacao, area, info_adicionais, beneficios, cargo, data_encerramento])
             cursor.execute("SELECT @id_requisito")
             id_requisito = cursor.fetchone()[0]
 

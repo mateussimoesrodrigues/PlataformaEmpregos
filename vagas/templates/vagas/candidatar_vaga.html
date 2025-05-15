@@ -2,8 +2,8 @@
 <html lang="pt">
   <head>
     <meta charset="UTF-8" />
-    <title>Candidatos</title>
-    <!-- Adicionando o Bootstrap -->
+    <title>Candidatar Vaga</title>
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
   </head>
@@ -44,55 +44,7 @@
       </div>
     </div>
 
-    <!-- Container para o conteúdo -->
-    <div class="container mt-5">
-      <h1 class="text-center mb-4">Área do Candidato</h1>
-
-      <!-- Card para mostrar as vagas disponíveis -->
-      <div class="container">
-        <h1>Vagas Ativas</h1>
-        {% if vagas %}
-          <table class="table table-striped table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>Empresa</th>
-                <th>Cargo</th>
-                <th>Localização</th>
-                <th>Data Encerramento</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for vaga in vagas %}
-                <tr class="clickable-row" data-href="{% url 'candidatar_vaga' id_vaga=vaga.id_vaga %}">
-                  <td>{{ vaga.NOME_EMPRESA }}</td>
-                  <td>{{ vaga.CARGO }}</td>
-                  <td>{{ vaga.LOCALIZACAO }}</td>
-                  <td>{{ vaga.DATA_ENCERRAMENTO }}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        {% else %}
-          <p>Não há vagas disponíveis para a empresa filtrada.</p>
-        {% endif %}
-      </div>
-    </div>
-
-    <!-- Bootstrap JS (necessário para o menu funcionar) -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.0/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const rows = document.querySelectorAll('.clickable-row')
-        rows.forEach((row) => {
-          row.addEventListener('click', () => {
-            const href = row.getAttribute('data-href')
-            if (href) {
-              window.location.href = href
-            }
-          })
-        })
-      })
-    </script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
