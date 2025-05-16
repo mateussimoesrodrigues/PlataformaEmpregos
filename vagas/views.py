@@ -135,10 +135,16 @@ def candidatos(request):
 def candidatar_vaga(request, id_vaga):
     # Buscar os requisitos já cadastrados para a vaga
     cursor = connection.cursor()
-    cursor.execute("SELECT REQUISITOS FROM plataforma_empregos.requisitos_da_vaga WHERE id_vaga = %s", [id_vaga])
-    id_vaga = [{'id_vaga': row[0]} for row in cursor.fetchall()]
+    cursor.execute("SELECT ve.id_requisito, ve.CARGO, ve.NOME_EMPRESA, date(ve.DATA_CRIACAO) as DATA_CRIACAO, ve.DATA_ENCERRAMENTO, ve.LOCALIZACAO, ve.AREA, ve.DESCRICAO, ve.INFO_ADICIONAIS, ve.BENEFICIOS FROM plataforma_empregos.vagas_de_emprego ve WHERE id_vaga = %s limit 1", [id_vaga])
+    colunas = [col[0] for col in cursor.description]
+    vaga = [dict(zip(colunas, row)) for row in cursor.fetchall()]
 
-    return render(request, 'vagas/candidatar_vaga.html', {'id_vaga': id_vaga})
+    cursor = connection.cursor()
+    cursor.execute("SELECT REQUISITOS FROM plataforma_empregos.requisitos_da_vaga WHERE id_requisito = (SELECT id_requisito FROM plataforma_empregos.vagas_de_emprego  WHERE id_vaga = %s)", [id_vaga])
+    colunas_req = [col[0] for col in cursor.description]
+    vaga_req = [dict(zip(colunas_req, row)) for row in cursor.fetchall()]
+
+    return render(request, 'vagas/candidatar_vaga.html', {'vaga': vaga, 'vaga_req': vaga_req})
 
 @login_required
 def minhas_vagas(request):

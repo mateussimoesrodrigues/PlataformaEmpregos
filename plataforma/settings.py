@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'plataforma_empregos', 
         'USER': 'geral',        
         'PASSWORD': '1234',      
-        'HOST': '192.168.15.11',            
+        'HOST': '192.168.36.9',            
         'PORT': '3306',                 
     }
 }
@@ -112,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'UTC'
 
