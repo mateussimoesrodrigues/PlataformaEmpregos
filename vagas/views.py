@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from .models import VagaDeEmprego
 from django.db import connection
 import json
 from django.http import JsonResponse
@@ -12,6 +11,11 @@ from django.contrib.auth.models import AnonymousUser, User
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.hashers import check_password  # Importando o check_password
 from django.contrib.auth.hashers import make_password  # Importe o make_password
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Chat, Mensagem
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+
 
 class CustomBackend(ModelBackend):
     def get_user(self, user_id):
@@ -112,8 +116,7 @@ def registro_candidato(request):
 
 
 def empresas(request):
-    vagas = VagaDeEmprego.objects.all()  # Exemplo de consulta ao banco
-    return render(request, 'vagas/empresas.html', {'vagas': vagas})
+    return render(request, 'vagas/empresas.html')
 
 
 def candidatos(request):
@@ -223,3 +226,86 @@ def area_empresa(request):
         'beneficios': 'Benefícios oferecidos',
     }
     return render(request, 'vagas/area_empresa.html', context)
+
+
+@login_required
+def listar_chats(request):
+    chats = Chat.objects.filter(participantes=request.user)
+    return render(request, 'vagas/lista_chats.html', {'chats': chats})
+
+@login_required
+def chat_view(request, chat_id):
+    chat = get_object_or_404(Chat, id=chat_id)
+    outro_participante = chat.participantes.exclude(id=request.user.id).first()
+
+    if request.user not in chat.participantes.all():
+        return redirect('listar_chats')
+
+    if request.method == 'POST':
+        texto = request.POST.get('mensagem')
+        if texto:
+            Mensagem.objects.create(chat=chat, remetente=request.user, texto=texto)
+
+    mensagens = chat.mensagem_set.order_by('timestamp')
+    return render(request, 'vagas/chat.html', {'chat': chat, 'mensagens': mensagens, 'outro_participante': outro_participante})
+
+@login_required
+def iniciar_chat(request):
+    meu_email = request.user.email
+
+    if request.method == 'POST':
+        email_destino = request.POST.get('email_destino')
+        texto = request.POST.get('texto')
+
+        # Busca o usuário de destino
+        outro_user = User.objects.filter(email=email_destino).first()
+
+        if outro_user:
+            # Verifica se já existe chat entre os dois
+            chats_existentes = Chat.objects.filter(participantes=request.user).filter(participantes=outro_user)
+            if chats_existentes.exists():
+                chat = chats_existentes.first()
+            else:
+                chat = Chat.objects.create()
+                chat.participantes.add(request.user, outro_user)
+
+            # Cria a primeira mensagem
+            if texto:
+                from .models import Mensagem
+                Mensagem.objects.create(chat=chat, remetente=request.user, texto=texto)
+
+            return redirect('chat_view', chat_id=chat.id)
+        else:
+            # Caso o email não seja válido (usuário não encontrado)
+            return render(request, 'vagas/iniciar_chat.html', {
+                'emails': [],
+                'erro': 'Usuário não encontrado.'
+            })
+
+    # Método GET → carrega lista de e-mails para o select
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT EMAIL_CANDIDATO FROM plataforma_empregos.controle_login WHERE EMAIL_CANDIDATO != %s", [meu_email])
+        emails = [row[0] for row in cursor.fetchall()]
+
+    return render(request, 'vagas/iniciar_chat.html', {'emails': emails})
+
+
+@login_required
+def enviar_mensagem(request, chat_id):
+    if request.method == 'POST':
+        texto = request.POST.get('mensagem')
+        chat = get_object_or_404(Chat, id=chat_id)
+        if request.user in chat.participantes.all():
+            Mensagem.objects.create(chat=chat, remetente=request.user, texto=texto)
+        return redirect('chat_view', chat_id=chat.id)
+    
+@login_required
+def atualizar_mensagens(request, chat_id):
+    chat = get_object_or_404(Chat, id=chat_id)
+
+    if request.user not in chat.participantes.all():
+        return HttpResponse(status=403)
+
+    mensagens = chat.mensagem_set.order_by('timestamp')
+    html = render_to_string('vagas/mensagens_parciais.html', {'mensagens': mensagens, 'user': request.user})
+    return HttpResponse(html)

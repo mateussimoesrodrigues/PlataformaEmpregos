@@ -1,0 +1,16 @@
+<form method="post">
+    {% csrf_token %}
+    <label for="email_destino">Escolha para quem enviar:</label>
+    <select name="email_destino" id="email_destino" required>
+        {% for email in emails %}
+            <option value="{{ email }}">{{ email }}</option>
+        {% endfor %}
+    </select>
+
+    <textarea name="texto" placeholder="Digite sua mensagem..." required></textarea>
+    <button type="submit">Enviar</button>
+</form>
+
+{% if erro %}
+    <p style="color: red;">{{ erro }}</p>
+{% endif %}

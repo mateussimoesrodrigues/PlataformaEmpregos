@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'plataforma_empregos', 
         'USER': 'geral',        
         'PASSWORD': '1234',      
-        'HOST': '192.168.36.9',            
+        'HOST': '192.168.15.11',            
         'PORT': '3306',                 
     }
 }
