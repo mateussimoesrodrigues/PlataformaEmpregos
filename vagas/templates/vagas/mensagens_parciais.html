@@ -1,6 +1,6 @@
 {% for msg in mensagens %}
   <div class="mensagem {% if msg.remetente == user %}eu{% else %}outro{% endif %}">
-     {{ msg.texto }}
+    {{ msg.texto }}
     {% if msg.timestamp %}
       <div class="timestamp">{{ msg.timestamp|date:'d/m/Y H:i' }}</div>
     {% endif %}

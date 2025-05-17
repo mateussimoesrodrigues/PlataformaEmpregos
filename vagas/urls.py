@@ -16,9 +16,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('minhas-vagas/', views.minhas_vagas, name='minhas_vagas'),
     path('candidatar_vaga/<str:id_vaga>/', views.candidatar_vaga, name='candidatar_vaga'),
-    path('chats/', views.listar_chats, name='listar_chats'),
-    path('chat/<int:chat_id>/', views.chat_view, name='chat_view'),
-    path('chat/iniciar/', views.iniciar_chat, name='iniciar_chat'),
     path('chat/enviar/<int:chat_id>/', views.enviar_mensagem, name='enviar_mensagem'),
     path('chat/<int:chat_id>/atualizar/', views.atualizar_mensagens, name='atualizar_mensagens'),
+
+    # NOVA URL para a página única com lista + chat na mesma tela
+    path('chat/fullpage/', views.chat_fullpage, name='chat_fullpage'),
     ]

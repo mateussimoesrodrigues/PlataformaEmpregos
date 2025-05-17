@@ -94,7 +94,7 @@
         })
       })
     </script>
-    <a href="{% url 'iniciar_chat' %}" title="Abrir chat" style="
+    <a href="{% url 'chat_fullpage' %}?chat={{ chat.id }}" title="Abrir chat" style="
     position: fixed;
     bottom: 30px;
     right: 30px;
@@ -112,5 +112,6 @@
     z-index: 1000;
     text-decoration: none;
 " onmouseover="this.style.backgroundColor='#0056b3';" onmouseout="this.style.backgroundColor='#007bff';">💬</a>
+
   </body>
 </html>
