@@ -183,84 +183,94 @@
 </div>
 
 <script>
-  const listaChats = document.querySelectorAll('#lista-chats li[data-chat-id]');
-  const mensagensContainer = document.getElementById('mensagens-container');
-  const headerChat = document.getElementById('header-chat');
-  const formMensagem = document.getElementById('form-mensagem');
-  const inputMensagem = document.getElementById('input-mensagem');
+const listaChats = document.querySelectorAll('#lista-chats li[data-chat-id]');
+const mensagensContainer = document.getElementById('mensagens-container');
+const headerChat = document.getElementById('header-chat');
+const formMensagem = document.getElementById('form-mensagem');
+const inputMensagem = document.getElementById('input-mensagem');
 
-  let chatAtualId = null;
-  let atualizarInterval = null;
+let chatAtualId = null;
+let atualizarInterval = null;
 
-  function carregarMensagens(chatId) {
-    fetch(`/chat/${chatId}/atualizar/`)
-      .then(response => {
-        if (!response.ok) throw new Error('Erro ao carregar mensagens');
-        return response.text();
-      })
-      .then(html => {
-        mensagensContainer.innerHTML = html;
-        mensagensContainer.scrollTop = mensagensContainer.scrollHeight;
-      })
-      .catch(console.error);
-  }
+function carregarMensagens(chatId) {
+  fetch(`/chat/${chatId}/atualizar/`)
+    .then(response => {
+      if (!response.ok) throw new Error('Erro ao carregar mensagens');
+      return response.text();
+    })
+    .then(html => {
+      mensagensContainer.innerHTML = html;
+      mensagensContainer.scrollTop = mensagensContainer.scrollHeight;
+    })
+    .catch(console.error);
+}
 
-  function selecionarChat(li) {
-    listaChats.forEach(item => item.classList.remove('selecionado'));
-    li.classList.add('selecionado');
+function selecionarChat(li) {
+  listaChats.forEach(item => item.classList.remove('selecionado'));
+  li.classList.add('selecionado');
 
-    chatAtualId = li.getAttribute('data-chat-id');
-    headerChat.textContent = li.textContent;
-    formMensagem.style.display = 'flex';
-    inputMensagem.value = '';
-    inputMensagem.focus();
+  chatAtualId = li.getAttribute('data-chat-id');
+  headerChat.textContent = li.textContent;
+  formMensagem.style.display = 'flex';
+  inputMensagem.value = '';
+  inputMensagem.focus();
 
-    carregarMensagens(chatAtualId);
+  carregarMensagens(chatAtualId);
 
-    if (atualizarInterval) clearInterval(atualizarInterval);
-    atualizarInterval = setInterval(() => carregarMensagens(chatAtualId), 5000);
-  }
+  if (atualizarInterval) clearInterval(atualizarInterval);
+  atualizarInterval = setInterval(() => carregarMensagens(chatAtualId), 5000);
+}
 
-  listaChats.forEach(li => {
-    li.addEventListener('click', () => {
-      selecionarChat(li);
-    });
+listaChats.forEach(li => {
+  li.addEventListener('click', () => {
+    selecionarChat(li);
   });
+});
 
-  formMensagem.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const texto = inputMensagem.value.trim();
-    if (!texto || !chatAtualId) return;
+formMensagem.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const texto = inputMensagem.value.trim();
+  if (!texto || !chatAtualId) return;
 
-    fetch(`/chat/enviar/${chatAtualId}/`, {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': getCookie('csrftoken'),
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({ mensagem: texto })
-    }).then(response => {
-      if (response.ok) {
-        inputMensagem.value = '';
-        carregarMensagens(chatAtualId);
-      } else {
-        alert('Erro ao enviar mensagem');
-      }
-    });
+  fetch(`/chat/enviar/${chatAtualId}/`, {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': getCookie('csrftoken'),
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({ mensagem: texto })
+  }).then(response => {
+    if (response.ok) {
+      inputMensagem.value = '';
+      carregarMensagens(chatAtualId);
+    } else {
+      alert('Erro ao enviar mensagem');
+    }
   });
+});
 
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let cookie of cookies) {
-        cookie = cookie.trim();
-        if (cookie.startsWith(name + '=')) {
-          cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
-          break;
-        }
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name + '=')) {
+        cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+        break;
       }
     }
-    return cookieValue;
   }
+  return cookieValue;
+}
+
+// NOVO BLOCO: abrir automaticamente o chat passado pelo back-end
+{% if chat_id_para_abrir and request.method == 'POST' %}
+window.onload = function () {
+  const chatDiv = document.querySelector(`[data-chat-id="{{ chat_id_para_abrir }}"]`);
+  if (chatDiv) {
+    chatDiv.click(); // só abre se veio de POST (busca por e-mail)
+  }
+};
+{% endif %}
 </script>

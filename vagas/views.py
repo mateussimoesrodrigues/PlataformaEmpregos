@@ -16,6 +16,7 @@ from .models import Chat, Mensagem
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.db.models import OuterRef, Subquery
+from django.db.models import Count
 
 
 class CustomBackend(ModelBackend):
@@ -232,19 +233,25 @@ def area_empresa(request):
 @login_required
 def chat_fullpage(request):
     chats = obter_chats_do_usuario(request.user)
-
     erro = None
-    chat_id_para_abrir = request.GET.get('chat')  # abrir se clicado via botão
+    chat_id_para_abrir = request.GET.get('chat')
 
     if request.method == 'POST':
         email_destino = request.POST.get('email_destino')
-        try:
-            destinatario = User.objects.get(email=email_destino)
-        except User.DoesNotExist:
-            return render(request, 'vagas/chat_fullpage.html', {'chats': chats, 'erro': 'Usuário não encontrado.'})
+        destinatario = User.objects.filter(email=email_destino).first()
 
-        # Verifica se já existe um chat entre os dois usuários
-        chat_existente = Chat.objects.filter(participantes=request.user).filter(participantes=destinatario).first()
+        if not destinatario:
+            return render(request, 'vagas/chat_fullpage.html', {
+                'chats': chats,
+                'erro': 'Usuário não encontrado.'
+            })
+
+        # Verifica se já existe um chat entre exatamente esses dois usuários
+        chat_existente = Chat.objects.annotate(num_participantes=Count('participantes')) \
+            .filter(participantes=request.user) \
+            .filter(participantes=destinatario) \
+            .filter(num_participantes=2) \
+            .first()
 
         if chat_existente:
             chat_id_para_abrir = chat_existente.id
@@ -256,7 +263,9 @@ def chat_fullpage(request):
     return render(request, 'vagas/chat_fullpage.html', {
         'chats': chats,
         'chat_id_para_abrir': chat_id_para_abrir,
+        'erro': erro
     })
+
 
 @login_required
 def atualizar_mensagens(request, chat_id):
