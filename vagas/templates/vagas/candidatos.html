@@ -19,7 +19,7 @@
           <button class="btn btn-outline-light" type="submit">Buscar</button>
         </form>
         <!-- Botão do Menu Hambúrguer -->
-        <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral"><i class="bi bi-list" style="font-size: 24px;"></i> <!-- Ícone do menu --></button>
+        <button class="btn btn-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral"><i class="bi bi-list" style="font-size: 35px; color:white"></i> <!-- Ícone do menu --></button>
       </div>
     </nav>
 
@@ -32,7 +32,7 @@
       <div class="offcanvas-body">
         <ul class="list-group">
           <li class="list-group-item">
-            <a href="#">Meu Currículo</a>
+            <a href="{% url 'curriculo' %}">Meu Currículo</a>
           </li>
           <li class="list-group-item">
             <a href="#">Minha Conta</a>
@@ -94,24 +94,23 @@
         })
       })
     </script>
-    <a href="{% url 'chat_fullpage' %}?chat={{ chat.id }}" title="Abrir chat" style="
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    font-size: 30px;
-    text-align: center;
-    line-height: 60px;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    transition: background-color 0.3s ease;
-    z-index: 1000;
-    text-decoration: none;
-" onmouseover="this.style.backgroundColor='#0056b3';" onmouseout="this.style.backgroundColor='#007bff';">💬</a>
-
+    <a href="#" title="Abrir chat" style="
+       position: fixed;
+       bottom: 30px;
+       right: 30px;
+       background-color: #007bff;
+       color: white;
+       border-radius: 50%;
+       width: 60px;
+       height: 60px;
+       font-size: 30px;
+       text-align: center;
+       line-height: 60px;
+       cursor: pointer;
+       box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+       transition: background-color 0.3s ease;
+       z-index: 1000;
+       text-decoration: none;
+   " onmouseover="this.style.backgroundColor='#0056b3';" onmouseout="this.style.backgroundColor='#007bff';" onclick="window.open('{% url 'chat_fullpage' %}?chat={{ chat.id }}', '_blank', 'width=800,height=600'); return false;">💬</a>
   </body>
 </html>

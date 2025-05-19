@@ -186,9 +186,31 @@ def novas_vagas(request):
         print(f"Vaga criada com id_requisito: {id_requisito}")
         return redirect('sucesso', id_requisito=id_requisito)
 
-    return render(request, 'vagas/novas_vagas.html')
+    return render(request, 'vagas/cur.html')
 
+@login_required(login_url='login')  # Redireciona para login se não estiver autenticado
+def curriculo(request):
+    if request.method == 'POST':
+        nome_empresa = request.session.get('nome_empresa', 'Empresa Desconhecida')
 
+        descricao = request.POST.get('descricao')
+        localizacao = request.POST.get('localizacao')
+        area = request.POST.get('area')
+        info_adicionais = request.POST.get('info_adicionais')
+        beneficios = request.POST.get('beneficios')
+        cargo = request.POST.get('cargo')
+        data_encerramento = request.POST.get('data_encerramento')
+
+        with connection.cursor() as cursor:
+            cursor.callproc('adicionar_vaga_spi', [nome_empresa, descricao, localizacao, area, info_adicionais, beneficios, cargo, data_encerramento])
+            cursor.execute("SELECT @id_requisito")
+            id_requisito = cursor.fetchone()[0]
+
+        connection.commit()
+        print(f"Vaga criada com id_requisito: {id_requisito}")
+        return redirect('sucesso', id_requisito=id_requisito)
+
+    return render(request, 'vagas/curriculo.html')
 
 def sucesso_view(request, id_requisito):
     # Buscar os requisitos já cadastrados para a vaga

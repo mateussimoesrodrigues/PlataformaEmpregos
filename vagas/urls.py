@@ -18,7 +18,6 @@ urlpatterns = [
     path('candidatar_vaga/<str:id_vaga>/', views.candidatar_vaga, name='candidatar_vaga'),
     path('chat/enviar/<int:chat_id>/', views.enviar_mensagem, name='enviar_mensagem'),
     path('chat/<int:chat_id>/atualizar/', views.atualizar_mensagens, name='atualizar_mensagens'),
-
-    # NOVA URL para a página única com lista + chat na mesma tela
     path('chat/fullpage/', views.chat_fullpage, name='chat_fullpage'),
+    path('curriculo/', views.curriculo, name='curriculo'),
     ]
