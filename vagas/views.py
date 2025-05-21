@@ -49,6 +49,7 @@ def login_view(request):
 
                         # Armazena o nome da empresa na sessão
                         request.session['nome_empresa'] = nome_empresa
+                        request.session['EMAIL_CANDIDATO'] = email
 
                         # Redireciona para a página correta com base na 'pagina'
                         if pagina == 'CANDIDATO':
@@ -186,31 +187,33 @@ def novas_vagas(request):
         print(f"Vaga criada com id_requisito: {id_requisito}")
         return redirect('sucesso', id_requisito=id_requisito)
 
-    return render(request, 'vagas/cur.html')
+    return render(request, 'vagas/novas_vagas.html')
 
-@login_required(login_url='login')  # Redireciona para login se não estiver autenticado
+@login_required(login_url='login')
 def curriculo(request):
+    candidato = request.session.get('EMAIL_CANDIDATO', 'Candidato Desconhecido')
+
     if request.method == 'POST':
-        nome_empresa = request.session.get('nome_empresa', 'Empresa Desconhecida')
 
-        descricao = request.POST.get('descricao')
-        localizacao = request.POST.get('localizacao')
-        area = request.POST.get('area')
-        info_adicionais = request.POST.get('info_adicionais')
-        beneficios = request.POST.get('beneficios')
-        cargo = request.POST.get('cargo')
-        data_encerramento = request.POST.get('data_encerramento')
+        habilidade = request.POST.get('habilidade')
+        if habilidade:
+            cursor = connection.cursor()
+            cursor.callproc('adicionar_habilidade_spi', [candidato, int(habilidade)])
+            cursor.close()
 
-        with connection.cursor() as cursor:
-            cursor.callproc('adicionar_vaga_spi', [nome_empresa, descricao, localizacao, area, info_adicionais, beneficios, cargo, data_encerramento])
-            cursor.execute("SELECT @id_requisito")
-            id_requisito = cursor.fetchone()[0]
+        return redirect('curriculo')
+        
 
-        connection.commit()
-        print(f"Vaga criada com id_requisito: {id_requisito}")
-        return redirect('sucesso', id_requisito=id_requisito)
+    cursor = connection.cursor()
+    cursor.execute("SELECT id, nome FROM plataforma_empregos.habilidade")
+    habilidades = [{'habilidade': row[0], 'nome': row[1]} for row in cursor.fetchall()]  
 
-    return render(request, 'vagas/curriculo.html')
+    cursor = connection.cursor()
+    cursor.callproc('habilidade_sps', [candidato])   
+    habilidades_candidato = [{'nome': row[0]} for row in cursor.fetchall()]
+    cursor.close()
+
+    return render(request, 'vagas/curriculo.html', {'habilidades': habilidades, 'habilidades_candidato': habilidades_candidato})
 
 def sucesso_view(request, id_requisito):
     # Buscar os requisitos já cadastrados para a vaga

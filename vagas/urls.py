@@ -19,5 +19,5 @@ urlpatterns = [
     path('chat/enviar/<int:chat_id>/', views.enviar_mensagem, name='enviar_mensagem'),
     path('chat/<int:chat_id>/atualizar/', views.atualizar_mensagens, name='atualizar_mensagens'),
     path('chat/fullpage/', views.chat_fullpage, name='chat_fullpage'),
-    path('curriculo/', views.curriculo, name='curriculo'),
+    path('curriculo', views.curriculo, name='curriculo'),
     ]

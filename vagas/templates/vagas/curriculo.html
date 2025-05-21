@@ -70,7 +70,30 @@
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingHabilidades"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHabilidades" aria-expanded="false" aria-controls="collapseHabilidades">Habilidades <span class="text-success ms-2">✔</span></button></h2>
           <div id="collapseHabilidades" class="accordion-collapse collapse" aria-labelledby="headingHabilidades" data-bs-parent="#curriculoAccordion">
-            <div class="accordion-body">oi</div>
+            <div class="accordion-body">
+                <p>Você pode informar até 30 habilidades que possui. (As habilidades envolvem desde conhecimentos técnicos até o modo como você se relaciona com as pessoas).</p>
+
+                <!-- Formulário para Adicionar habilidades -->
+                <form id="formHabilidade" method="POST" action="">
+                 {% csrf_token %}
+                 <div class="mb-3">
+                   <label for="habilidade" class="form-label">Habilidade</label>
+                   <select class="form-select" id="habilidade" name="habilidade" required>
+                     <option value="">Selecione uma habilidade</option>
+                     {% for habilidade in habilidades %}
+                       <option value="{{ habilidade.habilidade }}">{{ habilidade.nome }}</option>
+                     {% endfor %}
+                   </select>
+                 </div>
+                 <button type="submit" class="btn btn-primary">Adicionar Habilidade</button>
+                </form>
+                <h5 class="mt-4">Habilidades Adicionadas:</h5>
+                <ul id="listaHabilidades" class="list-group">
+                    {% for hc in habilidades_candidato %}
+                        <li class="list-group-item">{{ hc.nome }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
           </div>
         </div>
       </div>
