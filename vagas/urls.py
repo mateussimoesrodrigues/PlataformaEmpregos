@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from django.contrib import admin
 from django.urls import path, include
-from vagas import views  # Importe a view do login
+from vagas import views  
 
 urlpatterns = [
     path('', views.login_view, name='login'),
@@ -20,4 +20,6 @@ urlpatterns = [
     path('chat/<int:chat_id>/atualizar/', views.atualizar_mensagens, name='atualizar_mensagens'),
     path('chat/fullpage/', views.chat_fullpage, name='chat_fullpage'),
     path('curriculo', views.curriculo, name='curriculo'),
+    path('candidatura/<int:id_vaga>/', views.candidatura, name='candidatura'),
+    path('minhas_candidaturas', views.minhas_candidaturas, name='minhas_candidaturas'),
     ]

@@ -141,7 +141,7 @@ def candidatos(request):
 def candidatar_vaga(request, id_vaga):
     # Buscar os requisitos já cadastrados para a vaga
     cursor = connection.cursor()
-    cursor.execute("SELECT ve.id_requisito, ve.CARGO, ve.NOME_EMPRESA, date(ve.DATA_CRIACAO) as DATA_CRIACAO, ve.DATA_ENCERRAMENTO, ve.LOCALIZACAO, ve.AREA, ve.DESCRICAO, ve.INFO_ADICIONAIS, ve.BENEFICIOS FROM plataforma_empregos.vagas_de_emprego ve WHERE id_vaga = %s limit 1", [id_vaga])
+    cursor.execute("SELECT ve.id_vaga, ve.id_requisito, ve.CARGO, ve.NOME_EMPRESA, date(ve.DATA_CRIACAO) as DATA_CRIACAO, ve.DATA_ENCERRAMENTO, ve.LOCALIZACAO, ve.AREA, ve.DESCRICAO, ve.INFO_ADICIONAIS, ve.BENEFICIOS FROM plataforma_empregos.vagas_de_emprego ve WHERE id_vaga = %s limit 1", [id_vaga])
     colunas = [col[0] for col in cursor.description]
     vaga = [dict(zip(colunas, row)) for row in cursor.fetchall()]
 
@@ -151,6 +151,30 @@ def candidatar_vaga(request, id_vaga):
     vaga_req = [dict(zip(colunas_req, row)) for row in cursor.fetchall()]
 
     return render(request, 'vagas/candidatar_vaga.html', {'vaga': vaga, 'vaga_req': vaga_req})
+
+@login_required
+def candidatura(request, id_vaga):
+    email = request.session.get('EMAIL_CANDIDATO', 'Candidato Desconhecido')
+
+    cursor = connection.cursor()
+    cursor.callproc('candidatura_spi', [id_vaga, email])
+
+    cursor.close()
+
+    return redirect('minhas_candidaturas')
+
+@login_required
+def minhas_candidaturas(request):
+    email = request.session.get('EMAIL_CANDIDATO', 'Candidato Desconhecido')
+
+    cursor = connection.cursor()
+    cursor.callproc('candidatura_sps', [email])
+    rows = cursor.fetchall()
+    vagas = [{'nome_empresa': row[0],'descricao': row[1],'localizacao': row[2],'area': row[3],'info_adicionais': row[4],'beneficios': row[5],'cargo': row[6],'data_encerramento': row[7],'id_vaga': row[8], 'status': row[9],
+    } for row in rows]
+    cursor.close()
+
+    return render(request, 'vagas/minhas_candidaturas.html', {'vagas': vagas})
 
 @login_required
 def minhas_vagas(request):
