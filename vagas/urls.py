@@ -22,4 +22,6 @@ urlpatterns = [
     path('curriculo', views.curriculo, name='curriculo'),
     path('candidatura/<int:id_vaga>/', views.candidatura, name='candidatura'),
     path('minhas_candidaturas', views.minhas_candidaturas, name='minhas_candidaturas'),
+    path('ver_candidatos/<int:id_vaga>/', views.ver_candidatos, name='ver_candidatos'),
+    path('detalhes_candidatos/<int:id_vaga>/', views.detalhes_candidatos, name='detalhes_candidatos'),
     ]

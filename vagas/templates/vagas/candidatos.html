@@ -50,6 +50,33 @@
 
       <!-- Card para mostrar as vagas disponíveis -->
       <div class="container">
+        <h1>Vagas Recomendadas</h1>
+        {% if vagas_recomendadas %}
+          <table class="table table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Cargo</th>
+                <th>Localização</th>
+                <th>Data Encerramento</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for vaga_recomendada in vagas_recomendadas %}
+                <tr class="clickable-row" data-href="{% url 'candidatar_vaga' id_vaga=vaga_recomendada.id_vaga %}">
+                  <td>{{ vaga_recomendada.NOME_EMPRESA }}</td>
+                  <td>{{ vaga_recomendada.CARGO }}</td>
+                  <td>{{ vaga_recomendada.LOCALIZACAO }}</td>
+                  <td>{{ vaga_recomendada.DATA_ENCERRAMENTO }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>Não há vagas disponíveis para a empresa filtrada.</p>
+        {% endif %}
+      </div>
+      <div class="container">
         <h1>Vagas Ativas</h1>
         {% if vagas %}
           <table class="table table-striped table-bordered table-hover">

@@ -124,7 +124,8 @@ def empresas(request):
 
 def candidatos(request):
     query = request.GET.get('candidatos', '') 
-    
+    email = request.session.get('EMAIL_CANDIDATO', 'Candidato Desconhecido')
+
     if query:
         with connection.cursor() as cursor:
             cursor.execute("""SELECT NOME_EMPRESA, DESCRICAO, LOCALIZACAO, AREA, INFO_ADICIONAIS, BENEFICIOS, CARGO, DATA_ENCERRAMENTO, id_vaga FROM plataforma_empregos.vagas_de_emprego WHERE CURDATE() <= DATA_ENCERRAMENTO AND NOME_EMPRESA = %s;""", [query])
@@ -136,7 +137,12 @@ def candidatos(request):
             colunas = [col[0] for col in cursor.description]        
             vagas = [dict(zip(colunas, row)) for row in cursor.fetchall()]
 
-    return render(request, 'vagas/candidatos.html', {'vagas': vagas})
+    with connection.cursor() as cursor:
+            cursor.execute("""SELECT v.NOME_EMPRESA, v.DESCRICAO, v.LOCALIZACAO, v.AREA, v.INFO_ADICIONAIS, v.BENEFICIOS, v.CARGO, v.DATA_ENCERRAMENTO, v.id_vaga FROM candidato c JOIN candidato_habilidade ch ON c.id_candidato = ch.id_candidato JOIN habilidade h ON ch.id_habilidade = h.id JOIN requisitos_da_vaga r ON LOWER(CONCAT(' ', r.REQUISITOS, ' ')) LIKE CONCAT('%% ', LOWER(h.nome), ' %%') JOIN vagas_de_emprego v ON r.id_requisito = v.id_requisito WHERE c.EMAIL_CANDIDATO = %s AND CURDATE() <= v.DATA_ENCERRAMENTO""", [email])
+            colunas_recomendadas = [col[0] for col in cursor.description]        
+            vagas_recomendadas = [dict(zip(colunas_recomendadas, row)) for row in cursor.fetchall()]
+
+    return render(request, 'vagas/candidatos.html', {'vagas': vagas, 'vagas_recomendadas': vagas_recomendadas})
 
 def candidatar_vaga(request, id_vaga):
     # Buscar os requisitos já cadastrados para a vaga
@@ -151,6 +157,20 @@ def candidatar_vaga(request, id_vaga):
     vaga_req = [dict(zip(colunas_req, row)) for row in cursor.fetchall()]
 
     return render(request, 'vagas/candidatar_vaga.html', {'vaga': vaga, 'vaga_req': vaga_req})
+
+def detalhes_candidatos(request, id_candidato):
+
+    cursor = connection.cursor()
+    cursor.execute("SELECT ve.id_vaga, ve.id_requisito, ve.CARGO, ve.NOME_EMPRESA, date(ve.DATA_CRIACAO) as DATA_CRIACAO, ve.DATA_ENCERRAMENTO, ve.LOCALIZACAO, ve.AREA, ve.DESCRICAO, ve.INFO_ADICIONAIS, ve.BENEFICIOS FROM plataforma_empregos.vagas_de_emprego ve WHERE id_vaga = %s limit 1", [id_vaga])
+    colunas = [col[0] for col in cursor.description]
+    vaga = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+
+    cursor = connection.cursor()
+    cursor.execute("SELECT HABILIDADES FROM plataforma_empregos.requisitos_da_vaga WHERE id_requisito = (SELECT id_requisito FROM plataforma_empregos.vagas_de_emprego  WHERE id_candidato = %s)", [id_candidato])
+    colunas_req = [col[0] for col in cursor.description]
+    vaga_req = [dict(zip(colunas_req, row)) for row in cursor.fetchall()]
+
+    return render(request, 'vagas/detalhes_candidatos.html', {'vaga': vaga, 'vaga_req': vaga_req})
 
 @login_required
 def candidatura(request, id_vaga):
@@ -177,12 +197,42 @@ def minhas_candidaturas(request):
     return render(request, 'vagas/minhas_candidaturas.html', {'vagas': vagas})
 
 @login_required
+def ver_candidatos(request, id_vaga):
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT 
+                c.NOME_COMPLETO,
+                c.EMAIL_CANDIDATO, 
+                c.GENERO, 
+                c.TELEFONE, 
+                CONCAT(TIMESTAMPDIFF(YEAR, c.DATA_NASCIMENTO, CURDATE()), ' anos') AS IDADE, 
+                GROUP_CONCAT(h.nome SEPARATOR ', ') AS HABILIDADES
+            FROM candidatura a
+            LEFT JOIN candidato c ON a.id_candidato = c.id_candidato
+            LEFT JOIN candidato_habilidade ch ON c.id_candidato = ch.id_candidato
+            LEFT JOIN habilidade h ON ch.id_habilidade = h.id
+            WHERE a.id_vaga = %s
+            GROUP BY 
+                c.NOME_COMPLETO,
+                c.EMAIL_CANDIDATO, 
+                c.GENERO, 
+                c.TELEFONE, 
+                c.DATA_NASCIMENTO
+        """, [id_vaga])
+
+        colunas = [col[0] for col in cursor.description]
+        vagas = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+
+    return render(request, 'vagas/ver_candidatos.html', {'vagas': vagas})
+
+@login_required
 def minhas_vagas(request):
     nome_empresa = request.session.get('nome_empresa', 'Empresa Desconhecida')
 
     # Consulta SQL direta para filtrar as vagas pela empresa
     with connection.cursor() as cursor:
-        cursor.execute("""SELECT NOME_EMPRESA, DESCRICAO, LOCALIZACAO, AREA, INFO_ADICIONAIS, BENEFICIOS, CARGO, DATA_ENCERRAMENTO, id_requisito FROM plataforma_empregos.vagas_de_emprego WHERE NOME_EMPRESA = %s""", [nome_empresa])
+        cursor.execute("""SELECT NOME_EMPRESA, DESCRICAO, LOCALIZACAO, AREA, INFO_ADICIONAIS, BENEFICIOS, CARGO, DATA_ENCERRAMENTO, id_requisito, id_vaga FROM plataforma_empregos.vagas_de_emprego WHERE NOME_EMPRESA = %s""", [nome_empresa])
 
         colunas = [col[0] for col in cursor.description]  # nomes das colunas
         vagas = [dict(zip(colunas, row)) for row in cursor.fetchall()]  # transformar em dicionários
