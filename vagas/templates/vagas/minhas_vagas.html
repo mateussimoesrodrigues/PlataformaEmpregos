@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Área da Empresa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div style="background-color:#046BD4" class="container-fluid">
+        <a style="color: white; font-family: 'Breve Sans Text'; font-size: 32px" class="navbar-brand" href="{% url 'empresas' %}">Plataforma de Empregos</a>
+        <button class="btn btn-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral"><i class="bi bi-list" style="font-size: 35px; color:white"></i> <!-- Ícone do menu --></button>
+      </div>
+    </nav>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="menuLateral">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Meu Perfil</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <a href="{% url 'novas_vagas' %}">Criar nova vaga</a>
+          </li>
+          <li class="list-group-item">
+            <a href="{% url 'minhas_vagas' %}">Minhas Vagas</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="container">
+      <h1>Minhas Vagas</h1>
+      {% if vagas %}
+        <table class="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Localização</th>
+              <th>Área</th>
+              <th>Informações Adicionais</th>
+              <th>Benefícios</th>
+              <th>Cargo</th>
+              <th>Data Encerramento</th>
+              <th>Requisitos</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for vaga in vagas %}
+              <tr class="clickable-row" data-href="{% url 'ver_candidatos' id_vaga=vaga.id_vaga %}">
+                <td>{{ vaga.DESCRICAO }}</td>
+                <td>{{ vaga.LOCALIZACAO }}</td>
+                <td>{{ vaga.AREA }}</td>
+                <td>{{ vaga.INFO_ADICIONAIS }}</td>
+                <td>{{ vaga.BENEFICIOS }}</td>
+                <td>{{ vaga.CARGO }}</td>
+                <td>{{ vaga.DATA_ENCERRAMENTO }}</td>
+                <td>
+                  <a href="{% url 'sucesso' id_requisito=vaga.id_requisito %}" class="btn btn-primary btn-sm"><i class="fas fa-search"></i></a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>Não há vagas disponíveis para a sua empresa.</p>
+      {% endif %}
+    </div>
+    <a href="#" title="Abrir chat" style="
+       position: fixed;
+       bottom: 30px;
+       right: 30px;
+       background-color: #007bff;
+       color: white;
+       border-radius: 50%;
+       width: 60px;
+       height: 60px;
+       font-size: 30px;
+       text-align: center;
+       line-height: 60px;
+       cursor: pointer;
+       box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+       transition: background-color 0.3s ease;
+       z-index: 1000;
+       text-decoration: none;
+   " onmouseover="this.style.backgroundColor='#0056b3';" onmouseout="this.style.backgroundColor='#007bff';" onclick="window.open('{% url 'chat_fullpage' %}?chat={{ chat.id }}', '_blank', 'width=800,height=600'); return false;">💬</a>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const rows = document.querySelectorAll('.clickable-row')
+        rows.forEach((row) => {
+          row.addEventListener('click', () => {
+            const href = row.getAttribute('data-href')
+            if (href) {
+              window.location.href = href
+            }
+          })
+        })
+      })
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.0/dist/umd/popper.min.js" integrity="sha384-jGoC2kp90gBQAwXft7PpFuMhS6YXK0z9E7N9Jd5npPJS6Pz17hvh2UktkPMkXndt" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8fBxe+hfjoIHeHYGlLrtuHgH8FVvWb6Cg74pyNkFc1zTmA" crossorigin="anonymous"></script>
+  </body>
+</html>

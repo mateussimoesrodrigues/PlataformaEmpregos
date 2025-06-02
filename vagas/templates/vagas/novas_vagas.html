@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Área da Empresa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div style="background-color:#046BD4" class="container-fluid">
+            <a style="color: white; font-family: 'Breve Sans Text'; font-size: 32px" class="navbar-brand" href="{% url 'empresas' %}">Plataforma de Empregos</a>
+            <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
+                <i class="bi bi-list" style="font-size: 24px;"></i>
+            </button>
+        </div>
+    </nav>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="menuLateral">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Meu Perfil</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="{% url 'novas_vagas' %}">Criar nova vaga</a></li>
+                <li class="list-group-item"><a href="{% url 'minhas_vagas' %}">Minhas Vagas</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 mb-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h1 class="card-title">Crie uma Nova Vaga</h1>
+                        <p class="card-text">Crie vagas para atrair candidatos qualificados. Preencha as informações abaixo e publique sua vaga.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <form method="POST" action="{% url 'novas_vagas' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Descrição</label>
+                <textarea class="form-control" name="descricao" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Localização</label>
+                <input type="text" class="form-control" name="localizacao">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Área</label>
+                <input type="text" class="form-control" name="area">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Cargo</label>
+                <input type="text" class="form-control" name="cargo">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Informações Adicionais</label>
+                <textarea class="form-control" name="info_adicionais"></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Benefícios</label>
+                <input type="text" class="form-control" name="beneficios">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Data Encerramento</label>
+                <input type="date" class="form-control" name="data_encerramento">
+            </div>
+            <button type="submit" class="btn btn-primary">Criar Vaga</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

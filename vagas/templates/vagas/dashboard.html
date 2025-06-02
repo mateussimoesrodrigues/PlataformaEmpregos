@@ -1,0 +1,59 @@
+<!-- templates/vagas/dashboard.html -->
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dashboard</title>
+    <!-- Adicionando o Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div style="background-color:#046BD4" class="container-fluid">
+        <a style="color: white; font-family: 'Breve Sans Text'; font-size: 32px" class="navbar-brand" href="{% url 'dashboard' %}">Plataforma de Empregos</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a style="color: white; font-family: 'Breve Sans Text'; font-size: 32px" class="nav-link active" href="#">Dashboard</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Container para o conteúdo -->
+    <div class="container mt-5">
+      <h1 class="text-center mb-4">Bem-vindo à Plataforma de Empregos!</h1>
+
+      <!-- Card para área de empresas -->
+      <div class="row justify-content-center">
+        <div class="col-md-5 mb-4">
+          <div class="card">
+            <div class="card-body text-center">
+              <h5 class="card-title">Área de Empresas</h5>
+              <p class="card-text">Acesse e gerencie suas vagas de emprego, crie novas oportunidades e visualize candidatos.</p>
+              <a href="{% url 'empresas' %}" class="btn btn-primary">Ir para Empresas</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card para área de candidatos -->
+        <div class="col-md-5 mb-4">
+          <div class="card">
+            <div class="card-body text-center">
+              <h5 class="card-title">Área de Candidatos</h5>
+              <p class="card-text">Visualize e adicione seu currículo, pesquise vagas e veja as recomendações.</p>
+              <a href="{% url 'candidatos' %}" class="btn btn-success">Ir para Candidatos</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS (necessário para alguns componentes, como o collapse) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.0/dist/umd/popper.min.js" integrity="sha384-jGoC2kp90gBQAwXft7PpFuMhS6YXK0z9E7N9Jd5npPJS6Pz17hvh2UktkPMkXndt" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8fBxe+hfjoIHeHYGlLrtuHgH8FVvWb6Cg74pyNkFc1zTmA" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -1,0 +1,276 @@
+<style>
+  /* Container principal com duas colunas */
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+  }
+  #container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  /* Lista de chats à esquerda */
+  #lista-chats {
+    width: 320px;
+    border-right: 1px solid #ccc;
+    overflow-y: auto;
+    background: #f0f0f0;
+  }
+  #lista-chats h2 {
+    padding: 15px;
+    margin: 0;
+    background: #007bff;
+    color: white;
+  }
+  #lista-chats ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  #lista-chats li {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+  }
+  #lista-chats li:hover,
+  #lista-chats li.selecionado {
+    background: #007bff;
+    color: white;
+  }
+  
+  /* Área do chat à direita */
+  #painel-chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  #header-chat {
+    background: #007bff;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+  }
+  #mensagens-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    background: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+  }
+  .mensagem {
+    max-width: 60%;
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    border-radius: 15px;
+    word-wrap: break-word;
+  }
+  .mensagem.eu {
+    align-self: flex-end;
+    background-color: #007bff;
+    color: white;
+    border-bottom-right-radius: 0;
+  }
+  .mensagem.outro {
+    align-self: flex-start;
+    background-color: #e4e6eb;
+    color: black;
+    border-bottom-left-radius: 0;
+  }
+  .timestamp {
+    font-size: 0.7em;
+    color: #666;
+    margin-top: 3px;
+    text-align: right;
+  }
+  
+  /* Form de envio de mensagem */
+  #form-mensagem {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    background: white;
+  }
+  #form-mensagem input[type='text'] {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    font-size: 1em;
+  }
+  #form-mensagem button {
+    margin-left: 10px;
+    padding: 8px 16px;
+    border: none;
+    background: #007bff;
+    color: white;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  #form-mensagem button:hover {
+    background: #0056b3;
+  }
+  
+  /* Mensagem padrão quando não selecionou chat */
+  #nenhum-chat {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #999;
+    font-size: 1.2em;
+  }
+  #container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* A parte principal com os chats será um flex container horizontal */
+#area-chats {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+</style>
+
+
+<!-- Formulário de busca por e-mail -->
+<div id="container">
+  <!-- Formulário de busca -->
+  <form id="buscar-email-form" method="post" style="display: flex; gap: 10px; padding: 10px; background: #f8f9fa; border-bottom: 1px solid #ccc;">
+    {% csrf_token %}
+    <input type="email" name="email_destino" placeholder="Buscar por e-mail..." required style="flex: 1; padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+    <button type="submit" style="padding: 8px 12px; background-color: #007bff; color: white; border: none; border-radius: 5px;">Buscar</button>
+  </form>
+
+  <div id="erro-email" style="color: red; margin: 10px;">
+    {% if erro %}
+      {{ erro }}
+    {% endif %}
+  </div>
+
+  <!-- Área principal com lista de chats e painel de mensagens -->
+  <div id="area-chats">
+    <div id="lista-chats">
+      <h2>Conversas Recentes</h2>
+      <ul>
+        {% for chat in chats %}
+          <li data-chat-id="{{ chat.id }}">{{ chat.outro_email }}</li>
+        {% empty %}
+          <li>Você ainda não iniciou nenhuma conversa.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div id="painel-chat">
+      <div id="header-chat">Selecione uma conversa para começar</div>
+      <div id="mensagens-container">
+        <div id="nenhum-chat">Selecione uma conversa para começar</div>
+      </div>
+      <form id="form-mensagem" style="display:none;">
+        <input type="text" id="input-mensagem" placeholder="Digite sua mensagem" autocomplete="off" required />
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+const listaChats = document.querySelectorAll('#lista-chats li[data-chat-id]');
+const mensagensContainer = document.getElementById('mensagens-container');
+const headerChat = document.getElementById('header-chat');
+const formMensagem = document.getElementById('form-mensagem');
+const inputMensagem = document.getElementById('input-mensagem');
+
+let chatAtualId = null;
+let atualizarInterval = null;
+
+function carregarMensagens(chatId) {
+  fetch(`/chat/${chatId}/atualizar/`)
+    .then(response => {
+      if (!response.ok) throw new Error('Erro ao carregar mensagens');
+      return response.text();
+    })
+    .then(html => {
+      mensagensContainer.innerHTML = html;
+      mensagensContainer.scrollTop = mensagensContainer.scrollHeight;
+    })
+    .catch(console.error);
+}
+
+function selecionarChat(li) {
+  listaChats.forEach(item => item.classList.remove('selecionado'));
+  li.classList.add('selecionado');
+
+  chatAtualId = li.getAttribute('data-chat-id');
+  headerChat.textContent = li.textContent;
+  formMensagem.style.display = 'flex';
+  inputMensagem.value = '';
+  inputMensagem.focus();
+
+  carregarMensagens(chatAtualId);
+
+  if (atualizarInterval) clearInterval(atualizarInterval);
+  atualizarInterval = setInterval(() => carregarMensagens(chatAtualId), 5000);
+}
+
+listaChats.forEach(li => {
+  li.addEventListener('click', () => {
+    selecionarChat(li);
+  });
+});
+
+formMensagem.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const texto = inputMensagem.value.trim();
+  if (!texto || !chatAtualId) return;
+
+  fetch(`/chat/enviar/${chatAtualId}/`, {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': getCookie('csrftoken'),
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({ mensagem: texto })
+  }).then(response => {
+    if (response.ok) {
+      inputMensagem.value = '';
+      carregarMensagens(chatAtualId);
+    } else {
+      alert('Erro ao enviar mensagem');
+    }
+  });
+});
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name + '=')) {
+        cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+// NOVO BLOCO: abrir automaticamente o chat passado pelo back-end
+{% if chat_id_para_abrir and request.method == 'POST' %}
+window.onload = function () {
+  const chatDiv = document.querySelector(`[data-chat-id="{{ chat_id_para_abrir }}"]`);
+  if (chatDiv) {
+    chatDiv.click(); // só abre se veio de POST (busca por e-mail)
+  }
+};
+{% endif %}
+</script>
