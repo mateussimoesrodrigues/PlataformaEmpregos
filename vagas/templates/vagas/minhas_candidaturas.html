@@ -22,19 +22,16 @@
       <div class="offcanvas-body">
         <ul class="list-group">
           <li class="list-group-item">
-            <a href="{% url 'curriculo' %}">Meu Currículo</a>
+            <a href="{% url 'curriculo' %}" class="btn btn-primary">Meu Currículo</a>
           </li>
           <li class="list-group-item">
-            <a href="#">Minha Conta</a>
-          </li>
-          <li class="list-group-item">
-              <a href="{% url 'minhas_candidaturas' %}">Minhas Candidaturas</a>
+            <a href="{% url 'minhas_candidaturas' %}" class="btn btn-primary">Minhas Candidaturas</a>
           </li>
         </ul>
       </div>
     </div>
     <div class="container">
-      <h1>Minhas Vagas</h1>
+      <h1>Minhas Candidaturas</h1>
       {% if vagas %}
         <table class="table table-striped table-bordered table-hover">
           <thead>

@@ -35,9 +35,6 @@
             <a href="{% url 'curriculo' %}">Meu Currículo</a>
           </li>
           <li class="list-group-item">
-            <a href="#">Minha Conta</a>
-          </li>
-          <li class="list-group-item">
               <a href="{% url 'minhas_candidaturas' %}">Minhas Candidaturas</a>
           </li>
         </ul>
@@ -54,15 +51,49 @@
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingExperiencia"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExperiencia" aria-expanded="false" aria-controls="collapseExperiencia">Experiência <span class="text-success ms-2">✔</span></button></h2>
           <div id="collapseExperiencia" class="accordion-collapse collapse" aria-labelledby="headingExperiencia" data-bs-parent="#curriculoAccordion">
-            <div class="accordion-body">oi</div>
-          </div>
+            <div class="accordion-body">
+          <p>Adicione aqui suas experiências profissionais anteriores.</p>
+
+  <!-- Formulário de Adição -->
+          <form method="POST" action="">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="empresa" class="form-label">Empresa</label>
+              <input type="text" class="form-control" id="empresa" name="empresa" required>
+            </div>
+            <div class="mb-3">
+              <label for="cargo" class="form-label">Cargo</label>
+              <input type="text" class="form-control" id="cargo" name="cargo" required>
+            </div>
+            <div class="mb-3">
+              <label for="inicio" class="form-label">Data de Início</label>
+              <input type="date" class="form-control" id="inicio" name="inicio" required>
+            </div>
+            <div class="mb-3">
+              <label for="fim" class="form-label">Data de Término (opcional)</label>
+              <input type="date" class="form-control" id="fim" name="fim">
+            </div>
+            <div class="mb-3">
+              <label for="descricao" class="form-label">Descrição das Atividades</label>
+              <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+            </div>
+            <button type="submit" name="adicionar_experiencia" class="btn btn-primary">Adicionar Experiência</button>
+          </form>
+        
+          <!-- Lista de Experiências -->
+          <h5 class="mt-4">Experiências Adicionadas:</h5>
+          <ul class="list-group">
+            {% for exp in experiencias %}
+              <li class="list-group-item">
+                <strong>{{ exp.cargo }}</strong> na <strong>{{ exp.empresa }}</strong><br>
+                {{ exp.inicio|date:"d/m/Y" }} até {% if exp.fim %}{{ exp.fim|date:"d/m/Y" }}{% else %}Atual{% endif %}<br>
+                <small>{{ exp.descricao }}</small>
+              </li>
+            {% empty %}
+              <li class="list-group-item">Nenhuma experiência adicionada.</li>
+            {% endfor %}
+          </ul>
         </div>
-    </br>
-        <!-- Dados Pessoais -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingDados"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDados" aria-expanded="false" aria-controls="collapseDados">Dados Pessoais <span class="text-success ms-2">✔</span></button></h2>
-          <div id="collapseDados" class="accordion-collapse collapse" aria-labelledby="headingDados" data-bs-parent="#curriculoAccordion">
-            <div class="accordion-body">oi</div>
           </div>
         </div>
     </br>

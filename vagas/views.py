@@ -17,6 +17,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.db.models import OuterRef, Subquery
 from django.db.models import Count
+from datetime import datetime
 
 
 class CustomBackend(ModelBackend):
@@ -265,17 +266,66 @@ def novas_vagas(request):
 
 @login_required(login_url='login')
 def curriculo(request):
-    candidato = request.session.get('EMAIL_CANDIDATO', 'Candidato Desconhecido')
+    candidato_email = request.session.get('EMAIL_CANDIDATO', 'Candidato Desconhecido')
+    cursor = connection.cursor()
 
+    # Buscar id do candidato
+    cursor.execute("SELECT id_candidato FROM candidato WHERE EMAIL_CANDIDATO = %s", [candidato_email])
+    candidato_id = cursor.fetchone()
+    if not candidato_id:
+        return render(request, 'curriculo.html', {"erro": "Candidato não encontrado."})
+    candidato_id = candidato_id[0]
+
+    # Adicionar experiência
     if request.method == 'POST':
+        if 'habilidade' in request.POST:
+            habilidade = request.POST.get('habilidade')
+            if habilidade:
+                cursor.callproc('adicionar_habilidade_spi', [candidato_email, int(habilidade)])
+        
+        elif 'adicionar_experiencia' in request.POST:
+            empresa = request.POST.get('empresa')
+            cargo = request.POST.get('cargo')
+            inicio = request.POST.get('inicio')
+            fim = request.POST.get('fim') or None
+            descricao = request.POST.get('descricao')
 
-        habilidade = request.POST.get('habilidade')
-        if habilidade:
-            cursor = connection.cursor()
-            cursor.callproc('adicionar_habilidade_spi', [candidato, int(habilidade)])
-            cursor.close()
+            cursor.execute("""
+                INSERT INTO experiencia (id_candidato, empresa, cargo, inicio, fim, descricao)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, [candidato_id, empresa, cargo, inicio, fim, descricao])
 
+        cursor.close()
         return redirect('curriculo')
+
+    # Listar habilidades
+    cursor.execute("""
+        SELECT h.nome FROM habilidade h
+        JOIN candidato_habilidade ch ON h.id = ch.id_habilidade
+        WHERE ch.id_candidato = %s
+    """, [candidato_id])
+    habilidades_candidato = [{'nome': row[0]} for row in cursor.fetchall()]
+
+    # Listar experiências
+    cursor.execute("""
+        SELECT empresa, cargo, inicio, fim, descricao FROM experiencia
+        WHERE id_candidato = %s ORDER BY inicio DESC
+    """, [candidato_id])
+    experiencias = [
+        {
+            'empresa': row[0],
+            'cargo': row[1],
+            'inicio': row[2],
+            'fim': row[3],
+            'descricao': row[4]
+        } for row in cursor.fetchall()
+    ]
+    cursor.close()
+
+    return render(request, 'vagas/curriculo.html', {
+        'habilidades_candidato': habilidades_candidato,
+        'experiencias': experiencias
+    })
         
 
     cursor = connection.cursor()
