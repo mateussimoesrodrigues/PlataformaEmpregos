@@ -81,7 +81,7 @@ def login_view(request):
                         if pagina == 'CANDIDATO':
                             return redirect('candidatos')
                         elif pagina == 'EMPRESA':
-                            return redirect('empresas')
+                            return redirect('minhas_vagas')
                         else:
                             messages.error(request, 'Página desconhecida.')
                     else:
