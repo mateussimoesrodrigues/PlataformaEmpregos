@@ -1,0 +1,672 @@
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
+--
+-- Host: localhost    Database: plataforma_empregos
+-- ------------------------------------------------------
+-- Server version	8.0.40
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `auth_group`
+--
+
+DROP TABLE IF EXISTS `auth_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auth_group` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_group`
+--
+
+LOCK TABLES `auth_group` WRITE;
+/*!40000 ALTER TABLE `auth_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_group_permissions`
+--
+
+DROP TABLE IF EXISTS `auth_group_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auth_group_permissions` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `group_id` int NOT NULL,
+  `permission_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `auth_group_permissions_group_id_permission_id_0cd325b0_uniq` (`group_id`,`permission_id`),
+  KEY `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` (`permission_id`),
+  CONSTRAINT `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
+  CONSTRAINT `auth_group_permissions_group_id_b120cbf9_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_group_permissions`
+--
+
+LOCK TABLES `auth_group_permissions` WRITE;
+/*!40000 ALTER TABLE `auth_group_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_group_permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_permission`
+--
+
+DROP TABLE IF EXISTS `auth_permission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auth_permission` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `content_type_id` int NOT NULL,
+  `codename` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
+  CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_permission`
+--
+
+LOCK TABLES `auth_permission` WRITE;
+/*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
+INSERT INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can view log entry',1,'view_logentry'),(5,'Can add permission',2,'add_permission'),(6,'Can change permission',2,'change_permission'),(7,'Can delete permission',2,'delete_permission'),(8,'Can view permission',2,'view_permission'),(9,'Can add group',3,'add_group'),(10,'Can change group',3,'change_group'),(11,'Can delete group',3,'delete_group'),(12,'Can view group',3,'view_group'),(13,'Can add user',4,'add_user'),(14,'Can change user',4,'change_user'),(15,'Can delete user',4,'delete_user'),(16,'Can view user',4,'view_user'),(17,'Can add content type',5,'add_contenttype'),(18,'Can change content type',5,'change_contenttype'),(19,'Can delete content type',5,'delete_contenttype'),(20,'Can view content type',5,'view_contenttype'),(21,'Can add session',6,'add_session'),(22,'Can change session',6,'change_session'),(23,'Can delete session',6,'delete_session'),(24,'Can view session',6,'view_session'),(25,'Can add vaga',7,'add_vaga'),(26,'Can change vaga',7,'change_vaga'),(27,'Can delete vaga',7,'delete_vaga'),(28,'Can view vaga',7,'view_vaga'),(29,'Can add vaga',8,'add_vaga'),(30,'Can change vaga',8,'change_vaga'),(31,'Can delete vaga',8,'delete_vaga'),(32,'Can view vaga',8,'view_vaga'),(33,'Can add Vaga de Emprego',9,'add_vagadeemprego'),(34,'Can change Vaga de Emprego',9,'change_vagadeemprego'),(35,'Can delete Vaga de Emprego',9,'delete_vagadeemprego'),(36,'Can view Vaga de Emprego',9,'view_vagadeemprego'),(37,'Can add chat',10,'add_chat'),(38,'Can change chat',10,'change_chat'),(39,'Can delete chat',10,'delete_chat'),(40,'Can view chat',10,'view_chat'),(41,'Can add mensagem',11,'add_mensagem'),(42,'Can change mensagem',11,'change_mensagem'),(43,'Can delete mensagem',11,'delete_mensagem'),(44,'Can view mensagem',11,'view_mensagem');
+/*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_user`
+--
+
+DROP TABLE IF EXISTS `auth_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auth_user` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `password` varchar(128) NOT NULL,
+  `last_login` datetime(6) DEFAULT NULL,
+  `is_superuser` tinyint(1) NOT NULL,
+  `username` varchar(150) NOT NULL,
+  `first_name` varchar(150) NOT NULL,
+  `last_name` varchar(150) NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `is_staff` tinyint(1) NOT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `date_joined` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_user`
+--
+
+LOCK TABLES `auth_user` WRITE;
+/*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$870000$HoX0SJeTMmBbuJPW7El1iI$RmHnaLz38x+uqxz7DanyHZpccTHVKXIM+Jbq+VSx/3o=',NULL,1,'mateu','','','mateus.srodrigues@hotmail.com',1,1,'2025-03-06 00:22:06.475308'),(2,'','2025-06-02 23:51:02.748685',0,'mateus.srodrigues@hotmail.com','','','mateus.srodrigues@hotmail.com',0,1,'2025-05-06 23:48:03.142652'),(3,'','2025-06-02 23:50:44.082068',0,'mattsfc19@gmail.com','','','mattsfc19@gmail.com',0,1,'2025-05-07 00:08:33.078519'),(4,'','2025-05-17 18:52:27.835600',0,'gdosamigos26@gmail.com','','','gdosamigos26@gmail.com',0,1,'2025-05-17 18:46:26.996858');
+/*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_user_groups`
+--
+
+DROP TABLE IF EXISTS `auth_user_groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auth_user_groups` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `group_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `auth_user_groups_user_id_group_id_94350c0c_uniq` (`user_id`,`group_id`),
+  KEY `auth_user_groups_group_id_97559544_fk_auth_group_id` (`group_id`),
+  CONSTRAINT `auth_user_groups_group_id_97559544_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
+  CONSTRAINT `auth_user_groups_user_id_6a12ed8b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_user_groups`
+--
+
+LOCK TABLES `auth_user_groups` WRITE;
+/*!40000 ALTER TABLE `auth_user_groups` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_user_groups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_user_user_permissions`
+--
+
+DROP TABLE IF EXISTS `auth_user_user_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auth_user_user_permissions` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `permission_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `auth_user_user_permissions_user_id_permission_id_14a6b632_uniq` (`user_id`,`permission_id`),
+  KEY `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` (`permission_id`),
+  CONSTRAINT `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
+  CONSTRAINT `auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_user_user_permissions`
+--
+
+LOCK TABLES `auth_user_user_permissions` WRITE;
+/*!40000 ALTER TABLE `auth_user_user_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_user_user_permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `candidato`
+--
+
+DROP TABLE IF EXISTS `candidato`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `candidato` (
+  `NOME_COMPLETO` text,
+  `DATA_NASCIMENTO` text,
+  `EMAIL_CANDIDATO` text,
+  `TELEFONE` text,
+  `GENERO` text,
+  `SENHA` text,
+  `LOCALIZACAO` text,
+  `AREA` text,
+  `data_registro` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_candidato` int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id_candidato`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `candidato`
+--
+
+LOCK TABLES `candidato` WRITE;
+/*!40000 ALTER TABLE `candidato` DISABLE KEYS */;
+INSERT INTO `candidato` VALUES ('Mateus Simões','2025-05-06','mattsfc19@gmail.com','11944879011','masculino','pbkdf2_sha256$870000$Dn94VMHscJGcGPkb8gMUpk$8f3i145W1MxEDuIzE0+rqsl4+COGxX7hH6UpmEdeEBM=',NULL,NULL,'2025-05-07 00:08:17',1),('Mateus Simões','2025-04-30','mateus.srodrigues@hotmail.com','11944879011','masculino','pbkdf2_sha256$870000$1EaztvE4bG7ljqdahXO8b7$9IsDTZIweKObOqyaOO+Y9ytYFDD8fRwor8yFH9hwCrY=',NULL,NULL,'2025-05-07 00:16:47',2),('Mateus Simões','2025-05-19','gdosamigos26@gmail.com','11944879011','masculino','pbkdf2_sha256$870000$7XMxraPT7zf3Q3jsuBG2bv$Bw3Ai1pst8S6Cbx5qad/raySErxoWVWcj/qJ4Xmtwyo=',NULL,NULL,'2025-05-17 18:46:19',3);
+/*!40000 ALTER TABLE `candidato` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `candidato_habilidade`
+--
+
+DROP TABLE IF EXISTS `candidato_habilidade`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `candidato_habilidade` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_candidato` int DEFAULT NULL,
+  `id_habilidade` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_candidato` (`id_candidato`),
+  KEY `id_habilidade` (`id_habilidade`),
+  CONSTRAINT `candidato_habilidade_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `candidato` (`id_candidato`),
+  CONSTRAINT `candidato_habilidade_ibfk_2` FOREIGN KEY (`id_habilidade`) REFERENCES `habilidade` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `candidato_habilidade`
+--
+
+LOCK TABLES `candidato_habilidade` WRITE;
+/*!40000 ALTER TABLE `candidato_habilidade` DISABLE KEYS */;
+INSERT INTO `candidato_habilidade` VALUES (10,2,71),(11,2,51),(15,2,79),(17,2,10),(18,2,37);
+/*!40000 ALTER TABLE `candidato_habilidade` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `candidatura`
+--
+
+DROP TABLE IF EXISTS `candidatura`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `candidatura` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id_candidato` int NOT NULL,
+  `id_vaga` int NOT NULL,
+  `data_inscricao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` varchar(50) DEFAULT 'EM ANÁLISE',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `id_candidato` (`id_candidato`,`id_vaga`),
+  KEY `id_vaga` (`id_vaga`),
+  CONSTRAINT `candidatura_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `candidato` (`id_candidato`),
+  CONSTRAINT `candidatura_ibfk_2` FOREIGN KEY (`id_vaga`) REFERENCES `vagas_de_emprego` (`id_vaga`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `candidatura`
+--
+
+LOCK TABLES `candidatura` WRITE;
+/*!40000 ALTER TABLE `candidatura` DISABLE KEYS */;
+INSERT INTO `candidatura` VALUES (9,2,79,'2025-05-27 01:15:51','EM ANÁLISE'),(10,2,80,'2025-05-29 01:49:33','EM ANÁLISE');
+/*!40000 ALTER TABLE `candidatura` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `chat`
+--
+
+DROP TABLE IF EXISTS `chat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `chat` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `criado_em` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chat`
+--
+
+LOCK TABLES `chat` WRITE;
+/*!40000 ALTER TABLE `chat` DISABLE KEYS */;
+INSERT INTO `chat` VALUES (2,NULL),(7,NULL),(10,NULL);
+/*!40000 ALTER TABLE `chat` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `chat_participantes`
+--
+
+DROP TABLE IF EXISTS `chat_participantes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `chat_participantes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `chat_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `chat_id` (`chat_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `chat_participantes_ibfk_1` FOREIGN KEY (`chat_id`) REFERENCES `chat` (`id`),
+  CONSTRAINT `chat_participantes_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chat_participantes`
+--
+
+LOCK TABLES `chat_participantes` WRITE;
+/*!40000 ALTER TABLE `chat_participantes` DISABLE KEYS */;
+INSERT INTO `chat_participantes` VALUES (2,2,2),(3,2,3),(12,7,2),(13,7,4),(18,10,3),(19,10,4);
+/*!40000 ALTER TABLE `chat_participantes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `controle_login`
+--
+
+DROP TABLE IF EXISTS `controle_login`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `controle_login` (
+  `EMAIL_CANDIDATO` text,
+  `SENHA` text,
+  `PAGINA` text,
+  `data_registro` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `NOME_EMPRESA` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `controle_login`
+--
+
+LOCK TABLES `controle_login` WRITE;
+/*!40000 ALTER TABLE `controle_login` DISABLE KEYS */;
+INSERT INTO `controle_login` VALUES ('mattsfc19@gmail.com','pbkdf2_sha256$870000$Dn94VMHscJGcGPkb8gMUpk$8f3i145W1MxEDuIzE0+rqsl4+COGxX7hH6UpmEdeEBM=','EMPRESA','2025-05-07 00:08:17','SENAC'),('mateus.srodrigues@hotmail.com','pbkdf2_sha256$870000$1EaztvE4bG7ljqdahXO8b7$9IsDTZIweKObOqyaOO+Y9ytYFDD8fRwor8yFH9hwCrY=','CANDIDATO','2025-05-07 00:16:47',NULL),('gdosamigos26@gmail.com','pbkdf2_sha256$870000$7XMxraPT7zf3Q3jsuBG2bv$Bw3Ai1pst8S6Cbx5qad/raySErxoWVWcj/qJ4Xmtwyo=','CANDIDATO','2025-05-17 18:46:19',NULL);
+/*!40000 ALTER TABLE `controle_login` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_admin_log`
+--
+
+DROP TABLE IF EXISTS `django_admin_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `django_admin_log` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `action_time` datetime(6) NOT NULL,
+  `object_id` longtext,
+  `object_repr` varchar(200) NOT NULL,
+  `action_flag` smallint unsigned NOT NULL,
+  `change_message` longtext NOT NULL,
+  `content_type_id` int DEFAULT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `django_admin_log_content_type_id_c4bce8eb_fk_django_co` (`content_type_id`),
+  KEY `django_admin_log_user_id_c564eba6_fk_auth_user_id` (`user_id`),
+  CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
+  CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
+  CONSTRAINT `django_admin_log_chk_1` CHECK ((`action_flag` >= 0))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_admin_log`
+--
+
+LOCK TABLES `django_admin_log` WRITE;
+/*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_content_type`
+--
+
+DROP TABLE IF EXISTS `django_content_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `django_content_type` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `app_label` varchar(100) NOT NULL,
+  `model` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_content_type`
+--
+
+LOCK TABLES `django_content_type` WRITE;
+/*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
+INSERT INTO `django_content_type` VALUES (1,'admin','logentry'),(3,'auth','group'),(2,'auth','permission'),(4,'auth','user'),(5,'contenttypes','contenttype'),(7,'empregos','vaga'),(6,'sessions','session'),(10,'vagas','chat'),(11,'vagas','mensagem'),(8,'vagas','vaga'),(9,'vagas','vagadeemprego');
+/*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_migrations`
+--
+
+DROP TABLE IF EXISTS `django_migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `django_migrations` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `app` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `applied` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_migrations`
+--
+
+LOCK TABLES `django_migrations` WRITE;
+/*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2025-03-06 00:18:19.951147'),(2,'auth','0001_initial','2025-03-06 00:18:20.817222'),(3,'admin','0001_initial','2025-03-06 00:18:21.036462'),(4,'admin','0002_logentry_remove_auto_add','2025-03-06 00:18:21.046739'),(5,'admin','0003_logentry_add_action_flag_choices','2025-03-06 00:18:21.058229'),(6,'contenttypes','0002_remove_content_type_name','2025-03-06 00:18:21.167963'),(7,'auth','0002_alter_permission_name_max_length','2025-03-06 00:18:21.267442'),(8,'auth','0003_alter_user_email_max_length','2025-03-06 00:18:21.303712'),(9,'auth','0004_alter_user_username_opts','2025-03-06 00:18:21.321011'),(10,'auth','0005_alter_user_last_login_null','2025-03-06 00:18:21.405428'),(11,'auth','0006_require_contenttypes_0002','2025-03-06 00:18:21.411002'),(12,'auth','0007_alter_validators_add_error_messages','2025-03-06 00:18:21.421889'),(13,'auth','0008_alter_user_username_max_length','2025-03-06 00:18:21.512088'),(14,'auth','0009_alter_user_last_name_max_length','2025-03-06 00:18:21.594249'),(15,'auth','0010_alter_group_name_max_length','2025-03-06 00:18:21.619478'),(16,'auth','0011_update_proxy_permissions','2025-03-06 00:18:21.636982'),(17,'auth','0012_alter_user_first_name_max_length','2025-03-06 00:18:21.733031'),(18,'sessions','0001_initial','2025-03-06 00:18:21.788468'),(19,'empregos','0001_initial','2025-03-06 00:20:33.248172'),(20,'vagas','0001_initial','2025-03-06 00:40:33.167220'),(21,'vagas','0002_vagadeemprego_delete_vaga','2025-03-10 17:09:42.313524'),(22,'empregos','0002_delete_vaga','2025-05-17 03:55:11.557819'),(23,'vagas','0003_requisito_vaga_remove_vagadeemprego_id_requisito_and_more','2025-05-17 03:58:17.142644'),(24,'vagas','0004_vaga_nome_empresa','2025-05-17 03:58:17.147279'),(25,'vagas','0005_remove_vaga_nome_empresa_chat_mensagem','2025-05-17 03:58:17.151910'),(26,'vagas','0006_remove_requisito_vaga_and_more','2025-05-17 03:58:17.157046');
+/*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_session`
+--
+
+DROP TABLE IF EXISTS `django_session`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `django_session` (
+  `session_key` varchar(40) NOT NULL,
+  `session_data` longtext NOT NULL,
+  `expire_date` datetime(6) NOT NULL,
+  PRIMARY KEY (`session_key`),
+  KEY `django_session_expire_date_a5c62663` (`expire_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_session`
+--
+
+LOCK TABLES `django_session` WRITE;
+/*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
+INSERT INTO `django_session` VALUES ('8zlypjswu3dlav6xe9rfecuqmjlbqs4n','.eJxVjr1uwyAUhd-FOUKxwQ5kqtt0iNS0S3d04V5itwYqMFPVdy-RMrTr-fnO-WYG6jabWiibBdmR9Wz3V7PgPineDPyAeE3cpbjlxfJbhN_dwi8JaX28Z_8BZihza3s7ugOKTnjVC-2k0oM9dNIq19PQAflBKES5RyE8amhgN-7F6BC8lFrpBo0pkKHwlakAO8a6rjv2fJnOL-Zpej2dT9P7WxsKsFEtvOSEeblWKg9z2gIsa3se2M8vnS5Qqw:1uMEvm:D6Knlbc1ZAx4-f4GaRO0mHVbc9Kg-M5TyG_umHWgJIU','2025-06-16 23:51:02.755446'),('g8451vwqjqhulyfk9od6feiq7f16yv8i','.eJxVjMsOgjAQRf-la9MAU6B1p8albvyAZtqZig-oobAy_rslYaHbe849b2Fxnjo7Jx7tjcRWgNj8bg79g4cF0B2Ha5Q-DtN4c3JR5EqTPEXi5351_wIdpi6_g2t8S1BC0BUYr7SpXVsqp33FdYkcatBEqiCAQAZz2DcFNJ4wKGW0ydEh9my5f42cMBcvx_PuID5fXeM_xA:1uH9pv:F8tFJwMIXkacsefs5D0zrTsi9P7NtQDQf2vOPyUrfbM','2025-06-02 23:23:59.966343'),('kck9ezkojuw96v35ze8mqcdic539pu1s','.eJxVjMsOgjAQRf-la9MAU6B1p8albvyAZtqZig-oobAy_rslYaHbe849b2Fxnjo7Jx7tjcRWgNj8bg79g4cF0B2Ha5Q-DtN4c3JR5EqTPEXi5351_wIdpi6_g2t8S1BC0BUYr7SpXVsqp33FdYkcatBEqiCAQAZz2DcFNJ4wKGW0ydEh9my5f42cMBcvx_PuID5fXeM_xA:1uGN3K:EA7FNK8QlT_PirFykfeW1d0tI46UrBtHti-CKAntIeY','2025-05-31 19:18:34.573116'),('r1yjg2italubfy6ewig4d1ghdbp30gjo','.eJxVjEEOgyAQRe_CuiHqoILL7nsGMjBDtVVoRFdN715MXLTb_95_b2Fx30a7Z17tRGIQjbj8bg79k-MB6IHxnqRPcVsnJw9FnjTLWyKer6f7Fxgxj-UdXOd7ghqCbsB4pU3r-lo57Rtua-TQgiZSFQEEMljCvqug84RBKaNNica0sOXltXJGMcR9nj9foeg_0A:1uG9Ep:tSeJy40wJ3GgsRIbfo5iBU-eaJEtbl8-yl56j2J1V2E','2025-05-31 04:33:31.323442'),('rwrsh63ojbej8biawgd9219btz8t7bzi','.eJxVjEEOgyAQRe_CuiHqoILL7nsGMjBDtVVoRFdN715MXLTb_95_b2Fx30a7Z17tRGIQjbj8bg79k-MB6IHxnqRPcVsnJw9FnjTLWyKer6f7Fxgxj-UdXOd7ghqCbsB4pU3r-lo57Rtua-TQgiZSFQEEMljCvqug84RBKaNNica0sOXltXJGMcR9nj9foeg_0A:1uEu99:xwuxHq2zVRr6KgFM3yF0Fdy2frgxQaw9iMmWP9aVoIg','2025-05-27 18:14:31.119617');
+/*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `experiencia`
+--
+
+DROP TABLE IF EXISTS `experiencia`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `experiencia` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_candidato` int DEFAULT NULL,
+  `empresa` varchar(255) DEFAULT NULL,
+  `cargo` varchar(255) DEFAULT NULL,
+  `inicio` date DEFAULT NULL,
+  `fim` date DEFAULT NULL,
+  `descricao` text,
+  PRIMARY KEY (`id`),
+  KEY `id_candidato` (`id_candidato`),
+  CONSTRAINT `experiencia_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `candidato` (`id_candidato`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `experiencia`
+--
+
+LOCK TABLES `experiencia` WRITE;
+/*!40000 ALTER TABLE `experiencia` DISABLE KEYS */;
+INSERT INTO `experiencia` VALUES (1,2,'Vivo','Estagiário','2024-03-01',NULL,'Programador');
+/*!40000 ALTER TABLE `experiencia` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `habilidade`
+--
+
+DROP TABLE IF EXISTS `habilidade`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `habilidade` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nome` (`nome`)
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `habilidade`
+--
+
+LOCK TABLES `habilidade` WRITE;
+/*!40000 ALTER TABLE `habilidade` DISABLE KEYS */;
+INSERT INTO `habilidade` VALUES (17,'.NET'),(76,'Adaptabilidade'),(59,'Adobe Illustrator'),(58,'Adobe Photoshop'),(14,'Angular'),(48,'Apache Spark'),(31,'AWS'),(32,'Azure'),(47,'BigQuery'),(5,'C#'),(6,'C++'),(34,'CI/CD'),(71,'Comunicação'),(68,'Copywriting'),(79,'Criatividade'),(55,'CRM'),(69,'CRM (HubSpot, Salesforce)'),(11,'CSS'),(62,'Design Thinking'),(18,'Django'),(28,'Docker'),(70,'E-commerce'),(66,'Email Marketing'),(78,'Empatia'),(56,'ERP'),(40,'ETL'),(37,'Excel'),(65,'Facebook Ads'),(57,'Figma'),(25,'Firebase'),(19,'Flask'),(49,'Gestão de Projetos'),(77,'Gestão de Tempo'),(27,'Git'),(7,'Go'),(64,'Google Ads'),(33,'Google Cloud'),(10,'HTML'),(2,'Java'),(3,'JavaScript'),(35,'Jenkins'),(51,'Kanban'),(29,'Kubernetes'),(73,'Liderança'),(30,'Linux'),(67,'Marketing Digital'),(43,'Matplotlib'),(52,'Metodologias Ágeis'),(24,'MongoDB'),(21,'MySQL'),(15,'Node.js'),(42,'NumPy'),(54,'OKR'),(23,'Oracle'),(41,'Pandas'),(74,'Pensamento Crítico'),(9,'PHP'),(22,'PostgreSQL'),(38,'Power BI'),(80,'Proatividade'),(53,'Product Management'),(1,'Python'),(46,'PyTorch'),(12,'React'),(26,'Redis'),(75,'Resolução de Problemas'),(8,'Ruby'),(44,'Scikit-learn'),(50,'Scrum'),(63,'SEO'),(16,'Spring Boot'),(20,'SQL'),(39,'Tableau'),(45,'TensorFlow'),(36,'Terraform'),(72,'Trabalho em Equipe'),(4,'TypeScript'),(60,'UI Design'),(61,'UX Design'),(13,'Vue.js');
+/*!40000 ALTER TABLE `habilidade` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mensagem`
+--
+
+DROP TABLE IF EXISTS `mensagem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `mensagem` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `chat_id` int NOT NULL,
+  `remetente_id` int NOT NULL,
+  `texto` text NOT NULL,
+  `timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `chat_id` (`chat_id`),
+  KEY `remetente_id` (`remetente_id`),
+  CONSTRAINT `mensagem_ibfk_1` FOREIGN KEY (`chat_id`) REFERENCES `chat` (`id`),
+  CONSTRAINT `mensagem_ibfk_2` FOREIGN KEY (`remetente_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mensagem`
+--
+
+LOCK TABLES `mensagem` WRITE;
+/*!40000 ALTER TABLE `mensagem` DISABLE KEYS */;
+INSERT INTO `mensagem` VALUES (1,2,2,'oi',NULL),(2,2,2,'oi',NULL),(3,2,3,'eaiiii',NULL),(4,2,2,'tudo certo?',NULL),(5,2,3,'tudo sim meu  amigo',NULL),(6,2,3,'salve salve ',NULL),(7,2,2,'eaiiii',NULL),(8,2,3,'olaaa',NULL),(9,2,3,'olaaa',NULL),(10,2,2,'na paz?',NULL),(11,2,3,'olaaa',NULL),(12,2,3,'olaaa',NULL),(13,2,3,'olaaa',NULL),(14,2,3,'olaaa',NULL),(15,2,3,'olaaa',NULL),(16,2,2,'na paz?',NULL),(17,2,2,'loooogico papai',NULL),(18,2,3,'kkkkkk',NULL),(19,2,3,'salve salve ',NULL),(20,2,2,'opaaaa',NULL),(21,2,3,'eaaiiii',NULL),(22,2,2,'opaaaa',NULL),(23,2,3,'eaaiiii',NULL),(24,2,3,'opa',NULL),(25,2,3,'oi',NULL),(26,2,2,'oi',NULL),(28,7,4,'eaaiii',NULL),(29,7,4,'como que ta?',NULL),(30,10,3,'opa',NULL),(31,10,4,'opa',NULL),(32,2,2,'oi',NULL);
+/*!40000 ALTER TABLE `mensagem` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `requisitos_da_vaga`
+--
+
+DROP TABLE IF EXISTS `requisitos_da_vaga`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `requisitos_da_vaga` (
+  `id_vaga` int NOT NULL AUTO_INCREMENT,
+  `REQUISITOS` text,
+  `id_requisito` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_vaga`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `requisitos_da_vaga`
+--
+
+LOCK TABLES `requisitos_da_vaga` WRITE;
+/*!40000 ALTER TABLE `requisitos_da_vaga` DISABLE KEYS */;
+INSERT INTO `requisitos_da_vaga` VALUES (22,'Experiência em planejamento financeiro e/ou comercial, com análise de resultados;','SENAC-742318'),(23,'Capacidade analítica e raciocínio lógico;','SENAC-742318'),(24,'Excel e PowerPoint avançado;','SENAC-742318'),(25,'Senioridade e desenvoltura para responder sobre temas à Diretoria;','SENAC-742318'),(26,'Capacidade de interação com diversas áreas;','SENAC-742318');
+/*!40000 ALTER TABLE `requisitos_da_vaga` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vagas_de_emprego`
+--
+
+DROP TABLE IF EXISTS `vagas_de_emprego`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `vagas_de_emprego` (
+  `id_vaga` int NOT NULL AUTO_INCREMENT,
+  `NOME_EMPRESA` varchar(50) NOT NULL,
+  `DESCRICAO` text NOT NULL,
+  `LOCALIZACAO` varchar(70) DEFAULT NULL,
+  `AREA` varchar(100) DEFAULT NULL,
+  `INFO_ADICIONAIS` text,
+  `DATA_CRIACAO` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `BENEFICIOS` varchar(255) DEFAULT NULL,
+  `CARGO` varchar(255) DEFAULT NULL,
+  `DATA_ENCERRAMENTO` date DEFAULT NULL,
+  `id_requisito` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id_vaga`)
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `vagas_de_emprego`
+--
+
+LOCK TABLES `vagas_de_emprego` WRITE;
+/*!40000 ALTER TABLE `vagas_de_emprego` DISABLE KEYS */;
+INSERT INTO `vagas_de_emprego` VALUES (1,'VIVO','Teste da procedure','São Paulo, SP','Comercio','Vaga muito boa para quem é bom!','2025-03-05 23:26:56','Um pastel e uma coca GELADA!!!!!',NULL,NULL,'VIVO-741435-5'),(2,'VIVO','Desenvolvedor Backend','São Paulo, SP','Tecnologia','Desenvolvimento de APIs e integração de sistemas','2025-03-05 23:37:20','Assistência médica, vale-refeição e bônus de performance',NULL,NULL,'Google-582581-6'),(3,'VIVO','Analista de Suporte Técnico','Rio de Janeiro, RJ','TI','Suporte remoto e presencial a clientes','2025-03-05 23:37:20','Plano de saúde, vale transporte e bolsa de estudos',NULL,NULL,'Microsoft-688601-7'),(4,'VIVO','Gerente de Projetos','Belo Horizonte, MG','Gestão','Coordenação de equipes de desenvolvimento de software','2025-03-05 23:37:20','Plano odontológico, vale-alimentação e auxílio-creche',NULL,NULL,'IBM-695261-8'),(5,'VIVO','Engenheiro de Software','São Paulo, SP','Fintech','Desenvolvimento de sistemas de pagamento e banco digital','2025-03-05 23:37:20','Vale refeição, seguro de vida e home office',NULL,NULL,'Nubank-410503-9'),(6,'VIVO','Designer de Produto','São Paulo, SP','Design','Criação de interfaces para plataformas de hospedagem','2025-03-05 23:37:20','Vale-transporte, vale-alimentação e flexibilidade de horário',NULL,NULL,'Airbnb-966731-10'),(7,'VIVO','Especialista em Marketing Digital','Florianópolis, SC','Marketing','Planejamento e execução de campanhas publicitárias online','2025-03-05 23:37:20','Vale transporte, plano de saúde e bônus trimestral',NULL,NULL,'Meta-602149-11'),(8,'VIVO','Analista de Logística','Curitiba, PR','Logística','Gestão de estoque e distribuição de produtos','2025-03-05 23:37:20','Vale-refeição, plano de saúde e participação nos lucros',NULL,NULL,'Amazon-110552-12'),(9,'VIVO','Product Owner','São Paulo, SP','Tecnologia','Gestão de produtos digitais e definição de roadmap','2025-03-05 23:37:20','Seguro de vida, vale-transporte e bônus de performance',NULL,NULL,'Spotify-746312-13'),(10,'VIVO','Engenheiro Mecânico','São Bernardo do Campo, SP','Engenharia','Desenvolvimento e testes de sistemas automotivos','2025-03-05 23:37:20','Vale alimentação, plano de saúde e participação nos lucros',NULL,NULL,'Tesla-399906-14'),(11,'VIVO','Analista de Marketing','São Paulo, SP','Marketing','Pesquisa de mercado e desenvolvimento de campanhas','2025-03-05 23:37:20','Vale-refeição, plano de saúde e participação nos lucros',NULL,NULL,'Samsung-760596-15'),(12,'VIVO','Desenvolvedor de Software','São Paulo, SP','Tecnologia','Desenvolvimento de sistemas e aplicativos web','2025-03-05 23:39:00','Vale-refeição, plano de saúde e bônus anual',NULL,NULL,'Google-603260-16'),(13,'VIVO','Analista de Suporte Técnico','Rio de Janeiro, RJ','TI','Suporte a clientes internos e externos em sistemas Microsoft','2025-03-05 23:39:00','Plano odontológico, vale-alimentação e vale-transporte',NULL,NULL,'Microsoft-734511-17'),(14,'VIVO','Product Manager','São Paulo, SP','Tecnologia','Gestão de produtos digitais e desenvolvimento de estratégias de crescimento','2025-03-05 23:39:00','Vale-refeição, plano de saúde e flexibilidade de horário',NULL,NULL,'Facebook-862779-18'),(15,'VIVO','Engenheiro de Software','Belo Horizonte, MG','Tecnologia','Desenvolvimento de software para soluções corporativas','2025-03-05 23:39:00','Plano de saúde, vale-refeição e participação nos lucros',NULL,NULL,'IBM-110362-19'),(16,'VIVO','Analista de Marketing Digital','São Paulo, SP','Marketing','Planejamento e execução de campanhas de marketing digital','2025-03-05 23:39:00','Seguro de vida, vale-transporte e home office',NULL,NULL,'Nubank-963473-20'),(17,'VIVO','Engenheiro de Dados','São Paulo, SP','Tecnologia','Análise de dados e desenvolvimento de soluções de dados em tempo real','2025-03-05 23:39:00','Plano de saúde, vale-refeição e plano de carreira',NULL,NULL,'Uber-486281-21'),(18,'VIVO','Gerente de Logística','Curitiba, PR','Logística','Gestão de operações de distribuição e cadeia de suprimentos','2025-03-05 23:39:00','Vale-alimentação, seguro de vida e participação nos lucros',NULL,NULL,'Amazon-540984-22'),(19,'VIVO','Analista de Dados','São Paulo, SP','Tecnologia','Análise de dados de usuários e desenvolvimento de insights para negócios','2025-03-05 23:39:00','Vale-transporte, bônus trimestral e plano de saúde',NULL,NULL,'Spotify-246081-23'),(20,'VIVO','Designer de UX/UI','São Paulo, SP','Design','Desenvolvimento de interfaces e design de experiência de usuário','2025-03-05 23:39:00','Vale-refeição, seguro de vida e flexibilidade de horário',NULL,NULL,'Airbnb-607451-24'),(21,'VIVO','Desenvolvedor Backend','Florianópolis, SC','Tecnologia','Desenvolvimento de soluções backend escaláveis para aplicativos web','2025-03-05 23:39:00','Vale-transporte, plano de saúde e bônus de desempenho',NULL,NULL,'Meta-299011-25'),(22,'VIVO','Engenheiro Mecânico','São Bernardo do Campo, SP','Engenharia','Desenvolvimento e testes de sistemas automotivos para veículos elétricos','2025-03-05 23:39:00','Vale-alimentação, plano de saúde e participação nos lucros',NULL,NULL,'Tesla-672705-26'),(23,'VIVO','Analista de Marketing','São Paulo, SP','Marketing','Gestão de campanhas e pesquisa de mercado para produtos Samsung','2025-03-05 23:39:00','Vale-refeição, plano de saúde e participação nos lucros',NULL,NULL,'Samsung-466493-27'),(24,'VIVO','Especialista em SEO','São Paulo, SP','Marketing','Otimização de mecanismos de busca e estratégias de crescimento orgânico','2025-03-05 23:39:00','Plano odontológico, vale-alimentação e home office',NULL,NULL,'Adobe-314351-28'),(25,'VIVO','Community Manager','São Paulo, SP','Marketing','Gestão de comunidades online e estratégias de engajamento','2025-03-05 23:39:00','Vale-transporte, plano de saúde e bônus de performance',NULL,NULL,'Twitter-172276-29'),(26,'VIVO','Engenheiro de Software','São Paulo, SP','Tecnologia','Desenvolvimento de aplicações de streaming e plataformas interativas','2025-03-05 23:39:00','Vale-refeição, plano de saúde e participação nos lucros',NULL,NULL,'Netflix-918325-30'),(27,'VIVO','Desenvolvedor Frontend','São Paulo, SP','Tecnologia','Desenvolvimento de interfaces para aplicações web','2025-03-05 23:39:00','Seguro de vida, vale-transporte e bônus anual',NULL,NULL,'Baidu-74801-31'),(28,'VIVO','Gerente de Vendas','São Paulo, SP','Vendas','Gestão de equipe de vendas e desenvolvimento de estratégias comerciais','2025-03-05 23:39:00','Vale-alimentação, plano de saúde e comissão sobre vendas',NULL,NULL,'Huawei-619028-32'),(29,'VIVO','Suporte Técnico','São Paulo, SP','TI','Atendimento a clientes em problemas técnicos e manutenção de sistemas','2025-03-05 23:39:00','Vale-refeição, seguro de vida e participação nos lucros',NULL,NULL,'Dell-870739-33'),(30,'VIVO','Consultor de TI','São Paulo, SP','Consultoria','Consultoria em soluções Oracle para grandes empresas','2025-03-05 23:39:00','Vale-transporte, plano de saúde e bônus de desempenho',NULL,NULL,'Oracle-496610-34'),(31,'VIVO','Desenvolvedor Fullstack','Florianópolis, SC','Tecnologia','Desenvolvimento de sistemas front-end e back-end para plataformas de mídia social','2025-03-05 23:39:00','Vale-refeição, plano de saúde e home office',NULL,NULL,'Twitter-870835-35'),(32,'VIVO','Customer Support','São Paulo, SP','Atendimento ao Cliente','Suporte a clientes e resolução de problemas','2025-03-05 23:40:38','Vale-alimentação, plano de saúde e participação nos lucros',NULL,NULL,'Slack-864344-36'),(33,'VIVO','Especialista em Recursos Humanos','São Paulo, SP','Recursos Humanos','Recrutamento e seleção de candidatos e integração com ferramentas de RH','2025-03-05 23:40:38','Plano odontológico, vale-refeição e bônus anual',NULL,NULL,'LinkedIn-709216-37'),(34,'VIVO','Especialista em Suporte Técnico','São Paulo, SP','Suporte','Suporte técnico para clientes em plataformas de videoconferência','2025-03-05 23:40:38','Vale-refeição, seguro de vida e bônus por metas',NULL,NULL,'Zoom-953051-38'),(35,'VIVO','Engenheiro de Software','São Paulo, SP','Tecnologia','Desenvolvimento de soluções para personalização de playlists e recomendações','2025-03-05 23:40:38','Plano de saúde, vale-transporte e bônus anual',NULL,NULL,'Spotify-637604-39'),(36,'VIVO','Consultor de CRM','São Paulo, SP','Consultoria','Implementação e otimização de sistemas de CRM Salesforce','2025-03-05 23:40:38','Vale-refeição, plano de saúde e comissões',NULL,NULL,'Salesforce-328870-40'),(37,'VIVO','Analista de Marketing Digital','São Paulo, SP','Marketing','Gestão de campanhas publicitárias e estratégias de marketing digital','2025-03-05 23:40:38','Plano odontológico, vale-transporte e participação nos lucros',NULL,NULL,'Adobe-731536-41'),(38,'VIVO','Especialista em Conteúdo','São Paulo, SP','Marketing','Criação de conteúdo para plataformas de música e interações sociais','2025-03-05 23:40:38','Vale-alimentação, seguro de vida e bônus trimestral',NULL,NULL,'Spotify-671071-42'),(39,'VIVO','Desenvolvedor Backend','São Paulo, SP','Tecnologia','Desenvolvimento de APIs de pagamentos e sistemas financeiros','2025-03-05 23:40:38','Vale-refeição, plano de saúde e participação nos lucros',NULL,NULL,'Stripe-160747-43'),(40,'VIVO','Designer de Interface','São Paulo, SP','Design','Desenvolvimento de interfaces de usuário e experiências digitais','2025-03-05 23:40:38','Vale-refeição, plano de saúde e bônus de performance',NULL,NULL,'Snapchat-790525-44'),(41,'VIVO','Analista de Marketing','Curitiba, PR','Marketing','Planejamento e execução de campanhas de marketing online','2025-03-05 23:40:39','Plano odontológico, vale-alimentação e seguro de vida',NULL,NULL,'Amazon-470381-45'),(42,'VIVO','Analista de Vendas','São Paulo, SP','Vendas','Desenvolvimento de estratégias comerciais e gestão de equipe de vendas','2025-03-05 23:40:39','Vale-refeição, vale-transporte e bônus de performance',NULL,NULL,'Meta-980334-46'),(43,'VIVO','Engenheiro de Dados','São Paulo, SP','Tecnologia','Análise de dados e construção de pipelines de dados em sistemas CRM','2025-03-05 23:40:39','Vale-alimentação, plano de saúde e participação nos lucros',NULL,NULL,'Salesforce-490525-47'),(44,'VIVO','Gerente de Marketing Digital','São Paulo, SP','Marketing','Gestão de campanhas de marketing digital e estratégias de SEO','2025-03-05 23:40:39','Vale-transporte, plano de saúde e bônus trimestral',NULL,NULL,'Airbnb-511624-48'),(45,'VIVO','Analista de Suporte de TI','São Paulo, SP','TI','Suporte técnico e manutenção de sistemas corporativos Oracle','2025-03-05 23:40:39','Plano odontológico, vale-refeição e home office',NULL,NULL,'Oracle-86548-49'),(46,'VIVO','aesdfasf','asdfsadf','asdfsadf','sdfsdaf','2025-03-12 00:39:43','sadfsdaf',NULL,NULL,'AMIGOS-897866-50'),(47,'VIVO','ESTOU FAZENDO TESTES','SP','TI','MUITO BOM','2025-03-18 00:19:21','MTA GRANA',NULL,NULL,'TESTE REQUISITO-229687-51'),(48,'VIVO','Descrição da vaga','São Paulo','TI','Trabalho remoto','2025-03-18 00:26:16','Vale-refeição',NULL,NULL,'Empresa X-454838-52'),(50,'VIVO','Descrição','Sp','vendas','Trabalho presencial','2025-03-18 00:30:48','Vr',NULL,NULL,'Empresa y-585129-53'),(51,'VIVO','efferf','afasdf23','asdfsdaf23','2323','2025-03-18 00:37:44','rree',NULL,NULL,'AMIGOS2-561130-54'),(52,'VIVO','rtyhrtyh','rtyhrtyh','rtyhrty','rtyhyh','2025-03-18 00:40:41','rtyhrty',NULL,NULL,'rtyhrtyh-50265-55'),(53,'VIVO','rtyhrtyh','rtyhrtyh','rtyhrty','rtyhyh','2025-03-18 00:42:03','rtyhrty',NULL,NULL,'rtyhrtyh-567936-56'),(54,'VIVO','rtyhrtyh','rtyhrtyh','rtyhrty','rtyhyh','2025-03-18 00:42:47','rtyhrty',NULL,NULL,'rtyhrtyh-688887-57'),(55,'VIVO','rtyhrtyh','rtyhrtyh','rtyhrty','rtyhyh','2025-03-18 00:43:39','rtyhrty',NULL,NULL,'rtyhrtyh-740627-58'),(56,'VIVO','rtyhrtyh','rtyhrtyh','rtyhrty','rtyhyh','2025-03-18 00:45:48','rtyhrty',NULL,NULL,'rtyhrtyh-636474-59'),(57,'VIVO','rtyhrtyh','rtyhrtyh','rtyhrty','rtyhyh','2025-03-18 00:46:20','rtyhrty',NULL,NULL,'rtyhrtyh-960491-60'),(58,'VIVO','rtyhrtyh','rtyhrtyh','rtyhrty','rtyhyh','2025-03-18 00:47:27','rtyhrty',NULL,NULL,'rtyhrtyh-893031-61'),(59,'VIVO','rtyhrtyh','rtyhrtyh','rtyhrty','rtyhyh','2025-03-18 00:50:58','rtyhrty',NULL,NULL,'rtyhrtyh-583683-62'),(60,'VIVO','teste','teste','teste','teste','2025-04-23 23:12:10','teste',NULL,NULL,'teste-239322-63'),(61,'VIVO','AMIGOS','AMIGOS','AMIGOS','AMIGOS','2025-04-23 23:52:22','AMIGOS',NULL,NULL,'AMIGOS-445564-64'),(62,'VIVO','AMIGOS','AMIGOS','AMIGOS','AMIGOS','2025-04-23 23:57:02','AMIGOS',NULL,NULL,'AMIGOS-509852-65'),(63,'VIVO','AMIGOS','AMIGOS','AMIGOS','AMIGOS','2025-04-23 23:57:46','AMIGOS',NULL,NULL,'AMIGOS-212568-66'),(64,'VIVO','AMIGOS','AMIGOS','AMIGOS','AMIGOS','2025-04-23 23:58:46','AMIGOS',NULL,NULL,'AMIGOS-533284-67'),(65,'VIVO','AMIGOS','AMIGOS','AMIGOS','AMIGOS','2025-04-24 00:01:40','AMIGOS',NULL,NULL,'AMIGOS-28719-68'),(66,'VIVO','AMIGOS','AMIGOS','AMIGOS','AMIGOS','2025-04-24 00:14:18','AMIGOS',NULL,NULL,'AMIGOS-543741-69'),(67,'VIVO','teste da aula','sp','ti','vaga boa','2025-05-06 22:53:00','10 reais',NULL,NULL,'teste com o professor-632549-70'),(68,'VIVO','werwe','rwer','wer','wer','2025-05-06 23:25:28','wer',NULL,NULL,'Empresa Desconhecida-531523-71'),(69,'VIVO','WERWERWERWEWER','WERER','WEREWWERERW','WERWRE','2025-05-07 00:13:40','EWR',NULL,NULL,'SENAC-759967-72'),(70,'VIVO','Vaga para front end','São Paulo','TI','8 horas por dia','2025-05-07 01:13:30','VR+VT',NULL,NULL,'SENAC-205266-73'),(71,'VIVO','VAGA DE EMPREGO PARA DESEMPREGADOS','PERTO DE CASA','AMIGO','BEM BOM','2025-05-13 23:55:02','NADA',NULL,NULL,'SENAC-746429-74'),(73,'VIVO','wer','wer','wer','wer','2025-05-14 00:05:02','wer','wer','2025-05-20','SENAC-116348-75'),(74,'VIVO','TESTE','TESTE','TESTE','TESTE','2025-05-15 02:55:35','TESTE','TESTE','2025-05-17','SENAC-671337'),(75,'VIVO','TESTE','TESTE','TESTE','TESTE','2025-05-15 02:56:41','TESTE','TESTE','2025-05-17','SENAC-698867'),(76,'VIVO','TESTE','TESTE','TESTE','TESTE','2025-05-15 02:57:08','TESTE','TESTE','2025-05-17','SENAC-671590'),(77,'VIVO','TESTE','TESTE','TESTE','TESTE','2025-05-15 02:57:24','TESTE','TESTE','2025-05-17','SENAC-713003'),(78,'VIVO','teste','teste','teste','teste','2025-05-15 02:59:22','teste','teste','2025-05-17','SENAC-184979'),(79,'SENAC','Será responsável pelo planejamento financeiro de produtos de Fintech, incluindo a construção de business plan e plano orçamentário, acompanhamento de desempenho (orçado x realizado), criação de indicadores de produtividade, suporte a processos de compras e elaboração de relatórios e apresentações executivas.','São Paulo - SP','Planejamento','- Para participar do processo de Recrutamento Interno é necessário atender aos critérios de elegibilidade descritos na Normativa de Recrutamento Interno;\r\n\r\n- Comunique o seu gestor imediato, no momento que entender oportuno, sobre sua participação neste processo.\r\n\r\n \r\n\r\nCaso tenha dúvidas, consulte o documento na nossa Intranet > Vivo Minha Carreira > Normativa de Recrutamento Interno\r\n\r\n\r\n﻿Prazo até 22/05\r\n\r\nGestor: Felipe Guazzelli Mancini\r\n\r\nRecruiter: Cintia Pereira\r\n\r\n \r\n\r\n#VivoMinhaCarreira\r\n\r\n \r\n\r\nTemos uma cultura que valoriza a diversidade, as diferenças e o potencial das pessoas!','2025-05-15 23:33:35','Salário: R$ 8000,00 VR + VA + TotalPass','Analista Planejamento e Controle Sênior','2025-06-30','SENAC-742318'),(80,'SENAC','Será responsável pelo planejamento financeiro de produtos de Fintech, incluindo a construção de business plan e plano orçamentário, acompanhamento de desempenho (orçado x realizado), criação de indicadores de produtividade, suporte a processos de compras e elaboração de relatórios e apresentações executivas.','São Paulo - SP','Planejamento','- Para participar do processo de Recrutamento Interno é necessário atender aos critérios de elegibilidade descritos na Normativa de Recrutamento Interno;\r\n\r\n- Comunique o seu gestor imediato, no momento que entender oportuno, sobre sua participação neste processo.\r\n\r\n \r\n\r\nCaso tenha dúvidas, consulte o documento na nossa Intranet > Vivo Minha Carreira > Normativa de Recrutamento Interno\r\n\r\n\r\n﻿Prazo até 22/05\r\n\r\nGestor: Felipe Guazzelli Mancini\r\n\r\nRecruiter: Cintia Pereira\r\n\r\n \r\n\r\n#VivoMinhaCarreira\r\n\r\n \r\n\r\nTemos uma cultura que valoriza a diversidade, as diferenças e o potencial das pessoas!','2025-05-15 23:33:35','Salário: R$ 10000,00 VR + VA + TotalPass','Analista de Sistemas Sênior','2025-06-30','SENAC-742319'),(81,'Ambev','Gerenciar projetos de marketing digital, desde a concepção até a execução e análise de resultados. Otimizar campanhas para diversas plataformas e identificar novas oportunidades de crescimento.','Rio de Janeiro - RJ','Marketing','Experiência comprovada em SEO, SEM, mídias sociais e e-mail marketing. Habilidade analítica e de interpretação de dados. Certificações em Google Ads e Google Analytics são um diferencial.','2025-05-29 14:30:00','Salário: R$ 7000,00 + Bônus por performance + Vale-alimentação + Previdência Privada','Especialista em Marketing Digital','2025-07-20','AMBEV-MKT2025'),(82,'XP Investimentos','Prestar consultoria financeira a clientes de alta renda, elaborando planos de investimento personalizados e acompanhando o desempenho de suas carteiras. Manter-se atualizado(a) sobre o mercado financeiro.','São Paulo - SP','Finanças','Certificação CPA-20 ou CEA. Experiência prévia em consultoria financeira ou gestão de investimentos. Excelente comunicação e habilidades de relacionamento.','2025-05-30 17:00:00','Salário: R$ 12000,00 + Participação nos Lucros + Seguro de Vida + Auxílio Educação','Assessor(a) de Investimentos Sênior','2025-07-25','XP-FIN2025'),(83,'Natura','Coordenar a equipe de vendas e garantir o cumprimento das metas estabelecidas. Desenvolver estratégias para expansão da base de clientes e aprimoramento do relacionamento.','Belo Horizonte - MG','Comercial','Experiência em gestão de equipes de vendas, preferencialmente no setor de cosméticos. Capacidade de liderança e motivação. Disponibilidade para viagens.','2025-05-31 12:45:00','Salário: R$ 6500,00 + Comissão + Carro da empresa + Vale-combustível + Plano de Saúde','Gerente Comercial','2025-07-30','NATURA-COM2025'),(84,'Vale','Realizar a manutenção preventiva e corretiva de equipamentos industriais, garantindo a segurança e a eficiência das operações. Elaborar relatórios técnicos e propor melhorias.','Parauapebas - PA','Engenharia','Formação técnica em Mecânica, Elétrica ou áreas correlatas. Experiência em manutenção industrial. Conhecimento em normas de segurança (NRs).','2025-06-01 19:20:00','Salário: R$ 5000,00 + Adicional de Periculosidade + Alimentação no local + Fretado + Plano de Saúde','Técnico(a) de Manutenção Industrial','2025-08-05','VALE-ENG2025'),(85,'Itaú Unibanco','Atuar no atendimento ao cliente, solucionando demandas, oferecendo produtos e serviços e garantindo a satisfação. Realizar operações bancárias e auxiliar no processo de abertura de contas.','Curitiba - PR','Atendimento ao Cliente','Ensino médio completo. Experiência em atendimento ao público, preferencialmente em instituições financeiras. Habilidade em comunicação e resolução de problemas.','2025-06-02 11:30:00','Salário: R$ 3200,00 + Vale-transporte + Vale-refeição + Plano de Carreira + Auxílio Creche','Atendente Comercial','2025-08-10','ITAU-CLI2025'),(86,'Magazine Luiza','Desenvolver e implementar soluções de software de alta qualidade, garantindo a escalabilidade e manutenção. Colaborar com equipes multifuncionais para definir, projetar e lançar novos recursos.','São Paulo - SP','Desenvolvimento de Software','Experiência com metodologias ágeis (Scrum/Kanban). Conhecimento em microsserviços e arquitetura orientada a eventos. Formação superior em Ciência da Computação ou áreas relacionadas.','2025-05-28 13:00:00','Salário: R$ 9500,00 + Plano de Saúde + Plano Odontológico + Vale-refeição + Gympass','Desenvolvedor(a) Back-end Sênior','2025-07-15','MAGALU-DEV2025'),(87,'Globo','Criar e editar conteúdo audiovisual para diferentes plataformas digitais, garantindo qualidade e engajamento com o público.','Rio de Janeiro - RJ','Comunicação e Marketing','Experiência com edição de vídeo e ferramentas Adobe (Premiere, After Effects).','2025-06-04 13:30:00','Salário: R$ 4500,00 + Vale-refeição + Plano de Saúde + Gympass','Editor(a) de Vídeo','2025-08-20','GLOBO-MKT2025'),(88,'Embraer','Projetar componentes aeronáuticos seguindo normas de segurança e qualidade, utilizando software CAD e análise estrutural.','São José dos Campos - SP','Engenharia','Formação em Engenharia Mecânica ou Aeroespacial. Experiência em CAD 3D.','2025-06-05 14:15:00','Salário: R$ 11000,00 + Vale-alimentação + Plano Odontológico + Seguro de Vida','Engenheiro(a) Projetista','2025-08-25','EMBRAER-ENG2025'),(89,'Cielo','Desenvolver e manter aplicações web para sistemas financeiros, garantindo alta disponibilidade e segurança.','Barueri - SP','Desenvolvimento de Software','Experiência em .NET Core, C# e bancos relacionais.','2025-06-06 17:00:00','Salário: R$ 9000,00 + Vale-transporte + Plano de Saúde + Home Office parcial','Desenvolvedor(a) Back-end','2025-08-30','CIELO-BE2025'),(90,'Nubank','Atuar na equipe de atendimento ao cliente, solucionando dúvidas e problemas relacionados a cartões de crédito e serviços financeiros.','São Paulo - SP','Atendimento ao Cliente','Boa comunicação e experiência em atendimento digital.','2025-06-07 11:45:00','Salário: R$ 3500,00 + Vale-refeição + Plano de Carreira','Analista de Atendimento','2025-09-05','NUBANK-CLI2025'),(91,'Stone','Gerenciar campanhas de marketing e estratégias digitais para aumento da base de clientes.','São Paulo - SP','Marketing','Conhecimento em Google Ads, Facebook Ads e análise de dados.','2025-06-08 12:30:00','Salário: R$ 7500,00 + Bônus por performance + Vale-alimentação','Analista de Marketing Digital','2025-09-10','STONE-MKT2025'),(92,'Banco do Brasil','Atuar na análise de crédito e avaliação de riscos para clientes pessoa física e jurídica.','Brasília - DF','Finanças','Experiência em análise de crédito e ferramentas financeiras.','2025-06-09 13:00:00','Salário: R$ 8000,00 + Benefícios bancários + Plano de Saúde','Analista de Crédito','2025-09-15','BB-FIN2025'),(93,'Vale','Planejar e executar projetos ambientais, garantindo conformidade com legislações e políticas internas.','Rio de Janeiro - RJ','Engenharia Ambiental','Formação em Engenharia Ambiental ou áreas correlatas.','2025-06-10 16:45:00','Salário: R$ 7000,00 + Vale-refeição + Seguro de Vida','Engenheiro(a) Ambiental','2025-09-20','VALE-AMBI2025'),(94,'B2W Digital','Desenvolver front-end responsivo e acessível para plataformas de e-commerce.','Rio de Janeiro - RJ','Desenvolvimento Web','Conhecimento em React, JavaScript e boas práticas de UX.','2025-06-11 18:30:00','Salário: R$ 8500,00 + Vale-transporte + Plano Odontológico','Desenvolvedor(a) Front-end','2025-09-25','B2W-FE2025'),(95,'PagSeguro','Realizar análises de dados para suportar decisões estratégicas da área comercial.','São Paulo - SP','Análise de Dados','Experiência com SQL, Python e ferramentas de BI.','2025-06-12 14:00:00','Salário: R$ 7000,00 + Vale-alimentação + Home Office','Analista de Dados','2025-09-30','PAGS-DATA2025'),(96,'Amaro','Gerenciar estoque e logística para garantir a eficiência da cadeia de suprimentos.','São Paulo - SP','Logística','Experiência em sistemas ERP e gestão de estoque.','2025-06-13 11:30:00','Salário: R$ 6000,00 + Vale-transporte + Plano de Saúde','Coordenador(a) de Logística','2025-10-05','AMARO-LOG2025'),(97,'Itaú Unibanco','Desenvolver soluções financeiras digitais para plataformas mobile.','São Paulo - SP','Desenvolvimento de Software','Conhecimento em Swift, Kotlin e APIs REST.','2025-06-14 12:00:00','Salário: R$ 10000,00 + Plano de Saúde + Vale-refeição','Desenvolvedor(a) Mobile','2025-10-10','ITAU-MOB2025'),(98,'XP Investimentos','Analisar dados de mercado para auxiliar na elaboração de estratégias de investimentos.','São Paulo - SP','Finanças','Experiência com Excel avançado e ferramentas analíticas.','2025-06-15 13:30:00','Salário: R$ 9500,00 + Participação nos Lucros','Analista Financeiro','2025-10-15','XP-FIN2025-2'),(99,'Gerdau','Atuar no desenvolvimento e manutenção de sistemas internos de controle de produção.','Porto Alegre - RS','Desenvolvimento de Software','Conhecimento em C# e bancos de dados relacionais.','2025-06-16 17:00:00','Salário: R$ 8500,00 + Vale-transporte + Plano Odontológico','Desenvolvedor(a) Back-end','2025-10-20','GERDAU-BE2025'),(100,'Magazine Luiza','Liderar equipe de suporte técnico, garantindo atendimento ágil e eficaz aos clientes.','Belo Horizonte - MG','Suporte Técnico','Experiência em gestão de equipes e atendimento ao cliente.','2025-06-17 18:30:00','Salário: R$ 7000,00 + Vale-refeição + Plano de Saúde','Supervisor(a) de Suporte','2025-10-25','MAGALU-SUP2025'),(101,'Embratel','Atuar na implantação e manutenção de redes de telecomunicações, garantindo qualidade do serviço.','Brasília - DF','Telecomunicações','Conhecimento em redes LAN/WAN e protocolos de comunicação.','2025-06-18 11:00:00','Salário: R$ 7500,00 + Vale-transporte + Plano de Saúde','Técnico(a) de Telecom','2025-10-30','EMBRATEL-TEL2025'),(102,'Mercado Livre','Desenvolver APIs RESTful para integração de serviços internos e externos.','São Paulo - SP','Desenvolvimento de Software','Experiência com Node.js, Docker e metodologias ágeis.','2025-06-19 12:45:00','Salário: R$ 12000,00 + Plano de Saúde + Home Office','Desenvolvedor(a) Back-end','2025-11-05','MELI-BE2025'),(103,'Via Varejo','Planejar e executar campanhas promocionais em canais digitais e físicos.','São Paulo - SP','Marketing','Experiência em planejamento de marketing e análise de resultados.','2025-06-20 14:15:00','Salário: R$ 6500,00 + Vale-refeição + Bônus','Analista de Marketing','2025-11-10','VIAVAREJO-MKT2025'),(104,'Petrobras','Realizar análises químicas e laboratoriais para controle de qualidade dos produtos.','Rio de Janeiro - RJ','Engenharia Química','Formação em Engenharia Química e experiência em laboratório.','2025-06-21 16:00:00','Salário: R$ 8500,00 + Benefícios + Seguro de Vida','Analista de Controle de Qualidade','2025-11-15','PETROBRAS-ENG2025'),(105,'BASF','Gerenciar projetos de desenvolvimento sustentável e inovação tecnológica.','São Paulo - SP','Engenharia','Experiência em gestão de projetos e conhecimento em sustentabilidade.','2025-06-22 17:30:00','Salário: R$ 9000,00 + Vale-alimentação + Plano de Saúde','Gerente de Projetos','2025-11-20','BASF-PROJ2025'),(106,'TOTVS','Desenvolver soluções ERP customizadas para clientes de diferentes setores, garantindo a qualidade do software e suporte pós-implementação.','São Paulo - SP','Desenvolvimento de Software','Conhecimento em Java, SQL e arquitetura de sistemas. Experiência com ERP será um diferencial.','2025-06-03 12:00:00','Salário: R$ 8000,00 + Vale-transporte + Plano de Saúde + Bônus anual','Desenvolvedor(a) Java','2025-08-15','TOTVS-JAVA2025');
+/*!40000 ALTER TABLE `vagas_de_emprego` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vagas_requisito`
+--
+
+DROP TABLE IF EXISTS `vagas_requisito`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `vagas_requisito` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `requisito` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `vagas_requisito`
+--
+
+LOCK TABLES `vagas_requisito` WRITE;
+/*!40000 ALTER TABLE `vagas_requisito` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vagas_requisito` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vagas_vaga`
+--
+
+DROP TABLE IF EXISTS `vagas_vaga`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `vagas_vaga` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `nome` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `vagas_vaga`
+--
+
+LOCK TABLES `vagas_vaga` WRITE;
+/*!40000 ALTER TABLE `vagas_vaga` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vagas_vaga` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-06-02 21:01:21

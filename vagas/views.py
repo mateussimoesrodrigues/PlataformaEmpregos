@@ -71,6 +71,41 @@ def login_view(request):
 
 
 def registro_empresa(request):
+    if request.method == 'POST':
+        nome_empresa = request.POST.get('nome_empresa')
+        cnpj = request.POST.get('cnpj')
+        email = request.POST.get('email')
+        telefone = request.POST.get('telefone')
+        endereco = request.POST.get('endereco')
+        descricao = request.POST.get('descricao')
+        senha = request.POST.get('senha')
+
+        print("Recebi POST (EMPRESA):")
+        print(f"Nome: {nome_empresa}, CNPJ: {cnpj}, Email: {email}, Telefone: {telefone}, Endereço: {endereco}")
+
+        try:
+            senha_criptografada = make_password(senha)
+            print(f"Senha criptografada: {senha_criptografada}")
+
+            with connection.cursor() as cursor:
+                cursor.callproc('empresas_spi', [
+                    nome_empresa,
+                    cnpj,
+                    email,
+                    telefone,
+                    endereco,
+                    descricao,
+                    senha_criptografada
+                ])
+
+            connection.commit()
+            messages.success(request, 'Cadastro da empresa realizado com sucesso!')
+            return redirect('login')  # ou a página de dashboard da empresa
+
+        except Exception as e:
+            messages.error(request, f'Ocorreu um erro: {e}')
+            print(f"Erro ao cadastrar empresa: {e}")
+
     return render(request, 'vagas/registro_empresa.html')
 
 from django.db import connection
@@ -322,22 +357,24 @@ def curriculo(request):
     ]
     cursor.close()
 
-    return render(request, 'vagas/curriculo.html', {
-        'habilidades_candidato': habilidades_candidato,
-        'experiencias': experiencias
-    })
-        
 
     cursor = connection.cursor()
     cursor.execute("SELECT id, nome FROM plataforma_empregos.habilidade")
     habilidades = [{'habilidade': row[0], 'nome': row[1]} for row in cursor.fetchall()]  
 
     cursor = connection.cursor()
-    cursor.callproc('habilidade_sps', [candidato])   
+    cursor.callproc('habilidade_sps', [candidato_email])   
     habilidades_candidato = [{'nome': row[0]} for row in cursor.fetchall()]
     cursor.close()
 
-    return render(request, 'vagas/curriculo.html', {'habilidades': habilidades, 'habilidades_candidato': habilidades_candidato})
+    return render(request, 'vagas/curriculo.html', {
+        'habilidades_candidato': habilidades_candidato,
+        'experiencias': experiencias,
+        'habilidades': habilidades,
+    })
+        
+
+
 
 def sucesso_view(request, id_requisito):
     # Buscar os requisitos já cadastrados para a vaga
